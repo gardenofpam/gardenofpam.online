@@ -70,7 +70,8 @@ class HabitsTable
                         ]);
                     }),
                 TextInputColumn::make('focus_project')
-                    ->label('1')
+                    ->label('1 Focus')
+                    ->alignCenter()
                     ->placeholder('Your #1 project focus')
                     ->rules(['nullable', 'string', 'max:255']),
                 CheckboxColumn::make('five_to_do')
@@ -91,8 +92,10 @@ class HabitsTable
                             ->where('is_done', true)
                             ->count() === 5;
                     }),
+                CheckboxColumn::make('wind_workout')
+                    ->label('Workout')
+                    ->alignCenter(),
             ])
             ->recordActions([]);
     }
 }
-

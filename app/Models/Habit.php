@@ -17,6 +17,7 @@ class Habit extends Model
         'grow_20',
         'ninety_ninety_one_seconds',
         'focus_project',
+        'wind_workout',
         'focus_timer_started_at',
         'notes',
     ];
@@ -26,6 +27,7 @@ class Habit extends Model
         'mind_20' => 'boolean',
         'move_20' => 'boolean',
         'grow_20' => 'boolean',
+        'wind_workout' => 'boolean',
         'focus_timer_started_at' => 'datetime',
     ];
 
