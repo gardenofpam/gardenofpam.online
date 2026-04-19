@@ -34,6 +34,8 @@ Route::prefix('cpemina')->group(function () {
 Route::prefix('minapauldata')->group(function () {
     Route::get('/', [MinaPaulDataController::class, 'index'])
          ->name('minapauldata.index');
+    Route::get('/resume/view', [ResumeController::class, 'view'])
+         ->name('resume.view');
     Route::get('/resume/download', [ResumeController::class, 'download'])
          ->name('resume.download');
 });

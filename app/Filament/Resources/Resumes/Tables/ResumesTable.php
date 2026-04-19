@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Resumes\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
@@ -16,6 +17,10 @@ class ResumesTable
             ->columns([
                 TextColumn::make('version')
                     ->searchable(),
+                IconColumn::make('resume_file')
+                    ->label('File')
+                    ->boolean()
+                    ->getStateUsing(fn ($record): bool => filled($record->resume_file)),
                 IconColumn::make('is_active')
                     ->boolean()
                     ->label('Active'),
@@ -24,9 +29,13 @@ class ResumesTable
                     ->sortable(),
             ])
             ->recordActions([
+                Action::make('view')
+                    ->label('View')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn (): string => route('resume.view'))
+                    ->openUrlInNewTab(),
                 EditAction::make(),
                 DeleteAction::make(),
             ]);
     }
 }
-

@@ -15,15 +15,16 @@ class HabitsTable
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn ($query) => $query->whereDate('date', today()))
             ->defaultSort('date', 'desc')
             ->poll('750ms')
-            ->paginated(false)
             ->recordUrl(null)
             ->columns([
                 TextColumn::make('date')
                     ->label('Date')
                     ->date()
+                    ->url(fn (Habit $record): string => route('filament.admin.resources.daily-todos.index', [
+                        'date' => $record->date?->toDateString(),
+                    ]))
                     ->sortable(),
                 TextInputColumn::make('wakeup_time')
                     ->label('Wakeup Time')

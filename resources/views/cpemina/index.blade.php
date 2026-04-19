@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'CPEmina — Electronics Engineering')
-@section('description', 'Electronics Engineering Portfolio of Paul Albert Mina')
+@section('title', 'CPEmina — Computer Engineering')
+@section('description', 'Computer Engineering Portfolio of Paul Albert Mina')
 
 @push('styles')
 <style>
@@ -60,21 +60,40 @@
     }
     .profile-photo-frame {
         width: 20rem;
-        height: 20rem;
-        padding: 10px;
-        border-radius: 12px;
+        height: 35rem;
+        padding: 12px;
+        border-radius: 2.25rem;
         background:
             linear-gradient(145deg, rgba(74,124,89,0.25), rgba(6,27,14,0.95)),
             radial-gradient(circle at 18% 22%, rgba(154, 214, 170, 0.28), transparent 48%);
         border: 1px solid rgba(74,124,89,0.30);
         box-shadow: 0 0 60px rgba(74,124,89,0.22);
+        position: relative;
     }
-    .profile-photo-frame .photo {
+    .profile-photo-frame::before {
+        content: "";
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 7rem;
+        height: 1.6rem;
+        border-radius: 999px;
+        background: rgba(6,27,14,0.92);
+        border: 1px solid rgba(250,249,245,0.08);
+        z-index: 2;
+    }
+    .profile-photo-frame .photo,
+    .profile-photo-frame .phone-video {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 10px;
+        border-radius: 1.8rem;
         border: 1px solid rgba(250,249,245,0.10);
+        background: #0b130d;
+    }
+    .profile-photo-frame .photo {
+        object-position: center top;
     }
 </style>
 @endpush
@@ -94,7 +113,7 @@
                      style="background:rgba(74,124,89,0.12);
                             color:#4A7C59;
                             border-color:rgba(74,124,89,0.25);">
-                    Electronics Engineer · Active
+                    Computer Engineer · Active
                 </div>
 
                 <h1 class="font-serif text-6xl font-bold leading-tight mb-6"
@@ -109,7 +128,7 @@
 
                 <p class="text-lg leading-relaxed mb-10 max-w-md"
                    style="color:rgba(250,249,245,0.50);">
-                    {{ $profile->tagline ?? 'Building precision electronics and embedded systems that bridge the physical and digital world.' }}
+                    {{ $profile->tagline ?? 'Life is like soldering, rush it or lose focus and it won’t hold; with patience and precision, you build something strong and lasting.' }}
                 </p>
 
                 
@@ -117,7 +136,18 @@
 
             {{-- Right: Photo --}}
             <div class="flex justify-center lg:justify-end">
-                @if($profile && $profile->photo)
+                @if($profile && $profile->phone_video_url)
+                    <div class="profile-photo-frame">
+                        <video
+                            class="phone-video"
+                            src="{{ $profile->phone_video_url }}"
+                            autoplay
+                            muted
+                            loop
+                            playsinline>
+                        </video>
+                    </div>
+                @elseif($profile && $profile->photo)
                     <div class="profile-photo-frame">
                         <img src="{{ $profile->photo_url }}"
                              alt="Paul Albert Mina CPE"
@@ -266,7 +296,7 @@
                 </p>
                 <p style="color:rgba(250,249,245,0.25); font-size:12px;"
                    class="mt-1">
-                    Electronics Engineering
+                    Computer Engineering
                 </p>
             </div>
             <div class="flex gap-8">

@@ -1,274 +1,236 @@
+@php
+    $personalInfo = $resume->personal_info ?? [];
+    $professionalSummary = trim((string) ($resume->professional_summary ?: ($personalInfo['summary'] ?? '')));
+    $technicalSkills = $resume->technical_skills ?? [];
+    $skillGroups = [
+        'HELP DESK & SUPPORT' => $technicalSkills['help_desk_support'] ?? [],
+        'INFRASTRUCTURE' => $technicalSkills['infrastructure'] ?? [],
+        'OS & TOOLS' => $technicalSkills['os_tools'] ?? [],
+    ];
+    $certifications = collect($resume->certifications ?? [])
+        ->filter(fn ($item) => is_array($item) && filled($item['name'] ?? null))
+        ->values();
+    $experience = collect($resume->experience ?? [])
+        ->filter(fn ($item) => is_array($item) && (filled($item['position'] ?? null) || filled($item['company'] ?? null)))
+        ->values();
+    $education = collect($resume->education ?? [])
+        ->filter(fn ($item) => is_array($item) && (filled($item['degree'] ?? null) || filled($item['school'] ?? null)))
+        ->values();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Resume — Paul Albert Mina</title>
+    <title>Resume - {{ $personalInfo['name'] ?? 'Paul Albert Mina' }}</title>
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { box-sizing: border-box; }
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            font-size: 12px;
-            color: #061B0E;
-            background: #FAF9F5;
-            padding: 48px;
+            color: #111827;
+            font-size: 11px;
+            line-height: 1.45;
+            padding: 32px 38px;
         }
-
-        /* ── Header ── */
+        .page {
+            width: 100%;
+        }
         .header {
-            border-bottom: 2px solid #061B0E;
-            padding-bottom: 24px;
-            margin-bottom: 28px;
+            border-bottom: 1px solid #111827;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
         }
         .name {
-            font-family: Georgia, serif;
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 700;
-            color: #061B0E;
-            letter-spacing: -0.02em;
+            letter-spacing: 0.02em;
             margin-bottom: 6px;
         }
-        .contact-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 8px;
+        .contact {
+            font-size: 10px;
+            color: #374151;
         }
-        .contact-item {
-            font-size: 11px;
-            color: rgba(6,27,14,0.55);
-        }
-        .summary {
-            font-size: 12px;
-            color: rgba(6,27,14,0.65);
-            line-height: 1.7;
-            margin-top: 14px;
-            max-width: 560px;
-        }
-
-        /* ── Section ── */
         .section {
-            margin-bottom: 24px;
+            margin-top: 16px;
         }
         .section-title {
-            font-family: Georgia, serif;
-            font-size: 13px;
+            font-size: 10px;
             font-weight: 700;
-            color: #061B0E;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            letter-spacing: 0.10em;
-            border-bottom: 1px solid rgba(6,27,14,0.12);
-            padding-bottom: 6px;
-            margin-bottom: 14px;
+            border-bottom: 1px solid #d1d5db;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
         }
-
-        /* ── Item ── */
-        .item {
-            margin-bottom: 14px;
+        .entry {
+            margin-bottom: 10px;
         }
-        .item-title {
-            font-size: 13px;
+        .entry-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .entry-main {
+            width: 76%;
+            vertical-align: top;
+            padding-right: 12px;
+        }
+        .entry-date {
+            width: 24%;
+            vertical-align: top;
+            text-align: right;
+            white-space: nowrap;
+            color: #4b5563;
+        }
+        .entry-title {
+            font-size: 11px;
             font-weight: 700;
-            color: #061B0E;
         }
-        .item-sub {
-            font-size: 12px;
-            color: #4A7C59;
+        .entry-subtitle {
             margin-top: 2px;
-            font-weight: 600;
+            color: #374151;
         }
-        .item-date {
-            font-size: 11px;
-            color: rgba(6,27,14,0.40);
-            margin-top: 2px;
+        .entry-list {
+            margin: 6px 0 0 16px;
+            padding: 0;
         }
-        .item-desc {
-            font-size: 11px;
-            color: rgba(6,27,14,0.60);
-            margin-top: 5px;
-            line-height: 1.6;
+        .entry-list li {
+            margin-bottom: 3px;
         }
-
-        /* ── Tags ── */
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 6px;
+        .skill-line {
+            margin-bottom: 5px;
         }
-        .tag {
-            background: rgba(74,124,89,0.10);
-            color: #4A7C59;
-            border: 1px solid rgba(74,124,89,0.20);
-            padding: 3px 10px;
-            border-radius: 100px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-        .tag-gray {
-            background: rgba(6,27,14,0.05);
-            color: rgba(6,27,14,0.55);
-            border: 1px solid rgba(6,27,14,0.10);
-            padding: 3px 10px;
-            border-radius: 100px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-
-        /* ── Two Column ── */
-        .two-col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
-        /* ── Footer ── */
-        .footer {
-            margin-top: 36px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(6,27,14,0.10);
-            text-align: center;
-            font-size: 10px;
-            color: rgba(6,27,14,0.30);
+        .skill-label {
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
-
-    {{-- ══════════════════════════════ --}}
-    {{-- HEADER                         --}}
-    {{-- ══════════════════════════════ --}}
-    <div class="header">
-        <div class="name">
-            {{ $resume->personal_info['name'] ?? 'Paul Albert Mina' }}
+    <div class="page">
+        <div class="header">
+            <div class="name">{{ $personalInfo['name'] ?? 'Paul Albert Mina' }}</div>
+            <div class="contact">
+                {{ collect([
+                    $personalInfo['email'] ?? null,
+                    $personalInfo['phone'] ?? null,
+                    $personalInfo['location'] ?? null,
+                    $personalInfo['linkedin'] ?? null,
+                    $personalInfo['github'] ?? null,
+                ])->filter()->implode(' | ') }}
+            </div>
         </div>
 
-        <div class="contact-row">
-            @if(!empty($resume->personal_info['email']))
-                <span class="contact-item">
-                    {{ $resume->personal_info['email'] }}
-                </span>
-            @endif
-            @if(!empty($resume->personal_info['phone']))
-                <span class="contact-item">
-                    {{ $resume->personal_info['phone'] }}
-                </span>
-            @endif
-            @if(!empty($resume->personal_info['location']))
-                <span class="contact-item">
-                    {{ $resume->personal_info['location'] }}
-                </span>
-            @endif
-            @if(!empty($resume->personal_info['linkedin']))
-                <span class="contact-item">
-                    {{ $resume->personal_info['linkedin'] }}
-                </span>
-            @endif
-            @if(!empty($resume->personal_info['github']))
-                <span class="contact-item">
-                    {{ $resume->personal_info['github'] }}
-                </span>
-            @endif
-        </div>
-
-        @if(!empty($resume->personal_info['summary']))
-            <p class="summary">
-                {{ $resume->personal_info['summary'] }}
-            </p>
+        @if($professionalSummary !== '')
+            <div class="section">
+                <div class="section-title">Professional Summary</div>
+                <div>{{ $professionalSummary }}</div>
+            </div>
         @endif
-    </div>
 
-    {{-- ══════════════════════════════ --}}
-    {{-- EDUCATION                      --}}
-    {{-- ══════════════════════════════ --}}
-    @if($resume->education)
-        <div class="section">
-            <div class="section-title">Education</div>
-            @foreach($resume->education as $edu)
-                <div class="item">
-                    <div class="item-title">
-                        {{ $edu['degree'] ?? '' }}
-                        {{ $edu['field'] ?? '' }}
+        @if($certifications->isNotEmpty())
+            <div class="section">
+                <div class="section-title">Certifications</div>
+                @foreach($certifications as $certification)
+                    <div class="entry">
+                        <table class="entry-table">
+                            <tr>
+                                <td class="entry-main">
+                                    <div class="entry-title">{{ $certification['name'] ?? '' }}</div>
+                                    @if(!empty($certification['issuer']))
+                                        <div class="entry-subtitle">{{ $certification['issuer'] }}</div>
+                                    @endif
+                                </td>
+                                <td class="entry-date">{{ $certification['date'] ?? '' }}</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="item-sub">
-                        {{ $edu['school'] ?? '' }}
-                    </div>
-                    <div class="item-date">
-                        {{ $edu['start_year'] ?? '' }}
-                        @if(!empty($edu['end_year']))
-                            — {{ $edu['end_year'] }}
-                        @endif
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @endif
+                @endforeach
+            </div>
+        @endif
 
-    {{-- ══════════════════════════════ --}}
-    {{-- EXPERIENCE                     --}}
-    {{-- ══════════════════════════════ --}}
-    @if($resume->experience)
-        <div class="section">
-            <div class="section-title">Work Experience</div>
-            @foreach($resume->experience as $exp)
-                <div class="item">
-                    <div class="item-title">
-                        {{ $exp['position'] ?? '' }}
-                    </div>
-                    <div class="item-sub">
-                        {{ $exp['company'] ?? '' }}
-                    </div>
-                    <div class="item-date">
-                        {{ $exp['start_date'] ?? '' }}
-                        @if(!empty($exp['end_date']))
-                            — {{ $exp['end_date'] }}
-                        @endif
-                    </div>
-                    @if(!empty($exp['description']))
-                        <div class="item-desc">
-                            {{ $exp['description'] }}
+        @if(collect($skillGroups)->flatten(1)->filter()->isNotEmpty())
+            <div class="section">
+                <div class="section-title">Technical Skills</div>
+                @foreach($skillGroups as $label => $items)
+                    @if(!empty($items))
+                        <div class="skill-line">
+                            <span class="skill-label">{{ $label }}:</span>
+                            <span>{{ implode(', ', $items) }}</span>
                         </div>
                     @endif
-                </div>
-            @endforeach
-        </div>
-    @endif
-
-    {{-- ══════════════════════════════ --}}
-    {{-- SKILLS + TOOLS                 --}}
-    {{-- ══════════════════════════════ --}}
-    <div class="two-col">
-
-        @if($resume->skills)
-            <div class="section">
-                <div class="section-title">Skills</div>
-                <div class="tags">
-                    @foreach($resume->skills as $skill)
-                        <span class="tag">{{ $skill }}</span>
-                    @endforeach
-                </div>
+                @endforeach
             </div>
         @endif
 
-        @if($resume->tools)
+        @if($experience->isNotEmpty())
             <div class="section">
-                <div class="section-title">Tools</div>
-                <div class="tags">
-                    @foreach($resume->tools as $tool)
-                        <span class="tag-gray">{{ $tool }}</span>
-                    @endforeach
-                </div>
+                <div class="section-title">Experience</div>
+                @foreach($experience as $entry)
+                    @php
+                        $dates = trim(collect([
+                            $entry['start_date'] ?? null,
+                            $entry['end_date'] ?? null,
+                        ])->filter()->implode(' - '));
+                        $bullets = collect($entry['bullets'] ?? [])
+                            ->map(fn ($bullet) => is_array($bullet) ? ($bullet['text'] ?? '') : $bullet)
+                            ->filter(fn ($bullet) => filled($bullet))
+                            ->values();
+                    @endphp
+                    <div class="entry">
+                        <table class="entry-table">
+                            <tr>
+                                <td class="entry-main">
+                                    <div class="entry-title">
+                                        {{ $entry['position'] ?? '' }}
+                                        @if(!empty($entry['company']))
+                                            - {{ $entry['company'] }}
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="entry-date">{{ $dates }}</td>
+                            </tr>
+                        </table>
+                        @if($bullets->isNotEmpty())
+                            <ul class="entry-list">
+                                @foreach($bullets as $bullet)
+                                    <li>{{ $bullet }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                @endforeach
             </div>
         @endif
 
+        @if($education->isNotEmpty())
+            <div class="section">
+                <div class="section-title">Education</div>
+                @foreach($education as $entry)
+                    @php
+                        $dates = trim(collect([
+                            $entry['start_year'] ?? null,
+                            $entry['end_year'] ?? null,
+                        ])->filter()->implode(' - '));
+                        $title = trim(collect([
+                            $entry['degree'] ?? null,
+                            $entry['field'] ?? null,
+                        ])->filter()->implode(' in '));
+                    @endphp
+                    <div class="entry">
+                        <table class="entry-table">
+                            <tr>
+                                <td class="entry-main">
+                                    <div class="entry-title">{{ $title }}</div>
+                                    @if(!empty($entry['school']))
+                                        <div class="entry-subtitle">{{ $entry['school'] }}</div>
+                                    @endif
+                                </td>
+                                <td class="entry-date">{{ $dates }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                @endforeach
+            </div>
+        @endif
     </div>
-
-    {{-- ══════════════════════════════ --}}
-    {{-- FOOTER                         --}}
-    {{-- ══════════════════════════════ --}}
-    <div class="footer">
-        Paul Albert Mina · Data Analytics Portfolio · MinaPaulData
-        · Generated {{ date('F d, Y') }}
-    </div>
-
 </body>
 </html>

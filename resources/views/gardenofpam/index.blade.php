@@ -106,7 +106,7 @@
 
                 <p class="text-lg leading-relaxed mb-10 max-w-md"
                    style="color:rgba(6,27,14,0.55);">
-                    {{ $profile->tagline ?? 'Pruning complexity to find clarity — a personal space where ideas grow, stories bloom, and connections take root.' }}
+                    {{ $profile->tagline ?? 'Habits are quiet acts of love you give to your future self; with time, they become your life in bloom.' }}
                 </p>
 
                 <div class="flex items-center gap-4 flex-wrap">

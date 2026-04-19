@@ -17,6 +17,7 @@ class Profile extends Model
         'tagline',
         'bio',
         'photo',
+        'phone_video',
         'social_links',
         'interests',
         'favorite_movies',
@@ -40,30 +41,44 @@ class Profile extends Model
             return asset('images/placeholder-' . $this->niche . '.png');
         }
 
-        if (Str::startsWith($this->photo, ['http://', 'https://'])) {
-            return $this->photo;
+        return $this->resolveMediaUrl($this->photo);
+    }
+
+    public function getPhoneVideoUrlAttribute(): ?string
+    {
+        if (! $this->phone_video) {
+            return null;
         }
 
-        if (Storage::disk('public')->exists($this->photo)) {
-            return Storage::url($this->photo);
+        return $this->resolveMediaUrl($this->phone_video);
+    }
+
+    protected function resolveMediaUrl(string $path): string
+    {
+        if (Str::startsWith($path, ['http://', 'https://'])) {
+            return $path;
+        }
+
+        if (Storage::disk('public')->exists($path)) {
+            return Storage::url($path);
         }
 
         // Backfill legacy uploads that were saved to the local/private disk.
-        if (Storage::disk('local')->exists($this->photo)) {
-            $stream = Storage::disk('local')->readStream($this->photo);
+        if (Storage::disk('local')->exists($path)) {
+            $stream = Storage::disk('local')->readStream($path);
 
             if ($stream !== false) {
-                Storage::disk('public')->writeStream($this->photo, $stream);
+                Storage::disk('public')->writeStream($path, $stream);
 
                 if (is_resource($stream)) {
                     fclose($stream);
                 }
 
-                return Storage::url($this->photo);
+                return Storage::url($path);
             }
         }
 
-        return asset('storage/' . ltrim($this->photo, '/'));
+        return asset('storage/' . ltrim($path, '/'));
     }
 
     public static function forNiche(string $niche): ?self

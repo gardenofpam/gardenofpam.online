@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Profiles\Schemas;
 
+use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\KeyValue;
@@ -78,6 +79,20 @@ class ProfileForm
                         ->disk('public')
                         ->visibility('public')
                         ->directory('profiles')
+                        ->getUploadedFileUsing(static function (BaseFileUpload $component, string $file, string | array | null $storedFileNames): ?array {
+                            $storage = $component->getDisk();
+
+                            if (! $storage->exists($file)) {
+                                return null;
+                            }
+
+                            return [
+                                'name' => basename($file),
+                                'size' => $storage->size($file),
+                                'type' => $storage->mimeType($file),
+                                'url' => asset('storage/' . ltrim($file, '/')),
+                            ];
+                        })
                         ->imageEditor()
                         ->columnSpanFull(),
                 ])->columns(2),
@@ -130,6 +145,29 @@ class ProfileForm
     {
         return Section::make('CPEmina - Engineering Skills')
             ->schema([
+                FileUpload::make('phone_video')
+                    ->label('Phone Video')
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('profiles/videos')
+                    ->acceptedFileTypes(['video/mp4', 'video/quicktime', 'video/webm'])
+                    ->getUploadedFileUsing(static function (BaseFileUpload $component, string $file, string | array | null $storedFileNames): ?array {
+                        $storage = $component->getDisk();
+
+                        if (! $storage->exists($file)) {
+                            return null;
+                        }
+
+                        return [
+                            'name' => basename($file),
+                            'size' => $storage->size($file),
+                            'type' => $storage->mimeType($file),
+                            'url' => asset('storage/' . ltrim($file, '/')),
+                        ];
+                    })
+                    ->downloadable()
+                    ->openable()
+                    ->columnSpanFull(),
                 Repeater::make('engineering_skills')
                     ->label('Engineering Skills')
                     ->schema([

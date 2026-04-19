@@ -87,6 +87,33 @@
         padding-bottom: 0;
         margin-bottom: 0;
     }
+    .resume-viewer-shell {
+        background: #ffffff;
+        border: 1px solid rgba(6,27,14,0.10);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 18px 56px rgba(6,27,14,0.08);
+    }
+    .resume-viewer-frame {
+        width: 100%;
+        height: 780px;
+        border: 0;
+        background: #ffffff;
+    }
+    .resume-meta-card {
+        background: #FAF9F5;
+        border: 1px solid rgba(6,27,14,0.08);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 12px 32px rgba(6,27,14,0.05);
+    }
+    .resume-meta-label {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(6,27,14,0.40);
+        margin-bottom: 10px;
+    }
     .profile-photo-frame {
         width: 22rem;
         height: 22rem;
@@ -125,7 +152,7 @@
 
                 <h1 class="font-serif text-6xl font-bold leading-tight mb-6"
                     style="color:#061B0E;">
-                    Synthesizing<br>
+                    PRUNING<br>
                     <em class="font-normal" style="color:#4A7C59;">
                         Complexity.
                     </em>
@@ -140,6 +167,12 @@
 
                 <div class="flex items-center gap-4 flex-wrap">
                     @if($resume)
+                        <a href="{{ route('resume.view') }}"
+                           target="_blank"
+                           style="background:#FAF9F5; color:#061B0E; border:1px solid rgba(6,27,14,0.10); border-radius:10px;"
+                           class="px-6 py-3 text-sm font-medium tracking-wide hover:opacity-90 transition-opacity inline-flex items-center gap-2">
+                            View Resume
+                        </a>
                         <a href="{{ route('resume.download') }}"
                            style="background:#061B0E; color:#FAF9F5; border-radius:10px;"
                            class="px-6 py-3 text-sm font-medium tracking-wide hover:opacity-90 transition-opacity inline-flex items-center gap-2">
@@ -413,6 +446,115 @@
 {{-- RESUME                                  --}}
 {{-- ═══════════════════════════════════════ --}}
 @if($resume)
+<section style="background:#F5F0E8;" class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+        @php
+            $technicalSkills = $resume->technical_skills ?? [];
+            $skillGroups = [
+                'Help Desk & Support' => $technicalSkills['help_desk_support'] ?? [],
+                'Infrastructure' => $technicalSkills['infrastructure'] ?? [],
+                'OS & Tools' => $technicalSkills['os_tools'] ?? [],
+            ];
+            $professionalSummary = $resume->professional_summary ?: ($resume->personal_info['summary'] ?? null);
+        @endphp
+
+        <p class="section-label mb-4">Background</p>
+        <h2 class="font-serif text-4xl font-bold mb-12"
+            style="color:#061B0E;">
+            Resume
+        </h2>
+
+        <div class="grid grid-cols-1 xl:grid-cols-[0.9fr,1.1fr] gap-8 items-start">
+            <div class="space-y-6">
+                <div class="resume-meta-card">
+                    <p class="resume-meta-label">Professional Summary</p>
+                    <h3 class="font-serif text-2xl font-bold mb-4" style="color:#061B0E;">
+                        {{ $resume->personal_info['name'] ?? 'Paul Albert Mina' }}
+                    </h3>
+                    @if($professionalSummary)
+                        <p class="text-sm leading-relaxed" style="color:rgba(6,27,14,0.65);">
+                            {{ $professionalSummary }}
+                        </p>
+                    @endif
+                </div>
+
+                <div class="resume-meta-card">
+                    <p class="resume-meta-label">Technical Skills</p>
+                    <div class="space-y-4">
+                        @foreach($skillGroups as $label => $items)
+                            @if(!empty($items))
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-[0.18em] mb-2" style="color:#061B0E;">
+                                        {{ $label }}
+                                    </p>
+                                    <div class="flex flex-wrap gap-2">
+                                        @foreach($items as $item)
+                                            <span class="tag-skill">{{ $item }}</span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+
+                @if(!empty($resume->certifications))
+                    <div class="resume-meta-card">
+                        <p class="resume-meta-label">Certifications</p>
+                        <div class="space-y-3">
+                            @foreach($resume->certifications as $certification)
+                                @if(!empty($certification['name']))
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div>
+                                            <p class="text-sm font-semibold" style="color:#061B0E;">
+                                                {{ $certification['name'] }}
+                                            </p>
+                                            @if(!empty($certification['issuer']))
+                                                <p class="text-sm" style="color:rgba(6,27,14,0.55);">
+                                                    {{ $certification['issuer'] }}
+                                                </p>
+                                            @endif
+                                        </div>
+                                        @if(!empty($certification['date']))
+                                            <span class="text-xs whitespace-nowrap" style="color:rgba(6,27,14,0.40);">
+                                                {{ $certification['date'] }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                <div class="flex items-center gap-4 flex-wrap">
+                    <a href="{{ route('resume.view') }}"
+                       target="_blank"
+                       style="background:#FAF9F5; color:#061B0E; border:1px solid rgba(6,27,14,0.10); border-radius:10px;"
+                       class="px-6 py-3 text-sm font-medium tracking-wide hover:opacity-90 transition-opacity inline-flex items-center gap-2">
+                        Open Viewer
+                    </a>
+                    <a href="{{ route('resume.download') }}"
+                       style="background:#061B0E; color:#FAF9F5; border-radius:10px;"
+                       class="px-6 py-3 text-sm font-medium tracking-wide hover:opacity-90 transition-opacity inline-flex items-center gap-2">
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+
+            <div class="resume-viewer-shell">
+                <iframe
+                    src="{{ route('resume.view') }}"
+                    title="Resume Viewer"
+                    class="resume-viewer-frame">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+@endif
+
+@if(false)
 <section style="background:#F5F0E8;" class="py-24">
     <div class="max-w-4xl mx-auto px-6">
 

@@ -11,7 +11,11 @@ class Resume extends Model
 
     protected $fillable = [
         'version',
+        'resume_file',
         'personal_info',
+        'professional_summary',
+        'certifications',
+        'technical_skills',
         'education',
         'experience',
         'skills',
@@ -21,6 +25,8 @@ class Resume extends Model
 
     protected $casts = [
         'personal_info' => 'array',
+        'certifications' => 'array',
+        'technical_skills' => 'array',
         'education'     => 'array',
         'experience'    => 'array',
         'skills'        => 'array',
