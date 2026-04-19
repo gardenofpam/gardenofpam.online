@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'CPEmina — Computer Engineering')
+@section('title', 'CPEmina - Computer Engineering')
 @section('description', 'Computer Engineering Portfolio of Paul Albert Mina')
 
 @push('styles')
@@ -27,13 +27,57 @@
     .project-card {
         background: #F5F0E8;
         border: 1px solid rgba(6,27,14,0.08);
-        border-radius: 12px;
+        border-radius: 18px;
         overflow: hidden;
         transition: all 0.3s ease;
     }
     .project-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 20px 60px rgba(6,27,14,0.12);
+    }
+    .project-showcase-track {
+        display: flex;
+        gap: 1.5rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        padding-bottom: 1rem;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .project-showcase-track::-webkit-scrollbar {
+        display: none;
+    }
+    .project-showcase-slide {
+        min-width: min(85vw, 24rem);
+        scroll-snap-align: start;
+    }
+    @media (min-width: 768px) {
+        .project-showcase-slide {
+            min-width: 26rem;
+        }
+    }
+    .project-summary-clamp {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+    .showcase-nav {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 999px;
+        border: 1px solid rgba(6,27,14,0.10);
+        background: #F5F0E8;
+        color: #061B0E;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .showcase-nav:hover {
+        transform: translateY(-1px);
+        background: #ece4d8;
     }
     .tag-tech {
         background: rgba(74,124,89,0.10);
@@ -100,20 +144,13 @@
 
 @section('content')
 
-{{-- ═══════════════════════════════════════ --}}
-{{-- HERO                                    --}}
-{{-- ═══════════════════════════════════════ --}}
 <section class="hero-dark flex items-center">
     <div class="max-w-6xl mx-auto px-6 py-28">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
-            {{-- Left: Text --}}
             <div>
                 <div class="growth-badge mb-8"
-                     style="background:rgba(74,124,89,0.12);
-                            color:#4A7C59;
-                            border-color:rgba(74,124,89,0.25);">
-                    Computer Engineer · Active
+                     style="background:rgba(74,124,89,0.12); color:#4A7C59; border-color:rgba(74,124,89,0.25);">
+                    Computer Engineer - Active
                 </div>
 
                 <h1 class="font-serif text-6xl font-bold leading-tight mb-6"
@@ -128,13 +165,10 @@
 
                 <p class="text-lg leading-relaxed mb-10 max-w-md"
                    style="color:rgba(250,249,245,0.50);">
-                    {{ $profile->tagline ?? 'Life is like soldering, rush it or lose focus and it won’t hold; with patience and precision, you build something strong and lasting.' }}
+                    {{ $profile->tagline ?? "Life is like soldering, rush it or lose focus and it will not hold; with patience and precision, you build something strong and lasting." }}
                 </p>
-
-                
             </div>
 
-            {{-- Right: Photo --}}
             <div class="flex justify-center lg:justify-end">
                 @if($profile && $profile->phone_video_url)
                     <div class="profile-photo-frame">
@@ -160,18 +194,13 @@
                     </div>
                 @endif
             </div>
-
         </div>
     </div>
 </section>
 
-{{-- ═══════════════════════════════════════ --}}
-{{-- TECHNICAL TOOLKIT                       --}}
-{{-- ═══════════════════════════════════════ --}}
 @if($profile && $profile->engineering_skills)
 <section style="background:#1B3022;" class="py-24">
     <div class="max-w-6xl mx-auto px-6">
-
         <p class="section-label-light mb-4">Proficiencies</p>
         <h2 class="font-serif text-4xl font-bold mb-12"
             style="color:#FAF9F5;">
@@ -190,38 +219,56 @@
                 </div>
             @endforeach
         </div>
-
     </div>
 </section>
 @endif
 
-{{-- ═══════════════════════════════════════ --}}
-{{-- PROJECTS                                --}}
-{{-- ═══════════════════════════════════════ --}}
 <section style="background:#FAF9F5;" class="py-24">
-    <div class="max-w-6xl mx-auto px-6">
+    <div class="max-w-6xl mx-auto px-6"
+         x-data="{ scrollProjects(direction) { const amount = window.innerWidth >= 768 ? 440 : 320; this.$refs.projectTrack.scrollBy({ left: direction * amount, behavior: 'smooth' }); } }">
 
-        <p class="section-label mb-4">Work</p>
-        <h2 class="font-serif text-4xl font-bold mb-12"
-            style="color:#061B0E;">
-            Project Grid
-        </h2>
+        <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between mb-12">
+            <div>
+                <p class="section-label mb-4">Work</p>
+                <h2 class="font-serif text-4xl font-bold"
+                    style="color:#061B0E;">
+                    Interactive Project Showcase
+                </h2>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button type="button"
+                        class="showcase-nav"
+                        @click="scrollProjects(-1)"
+                        aria-label="Scroll projects left">
+                    <span aria-hidden="true">&larr;</span>
+                </button>
+                <button type="button"
+                        class="showcase-nav"
+                        @click="scrollProjects(1)"
+                        aria-label="Scroll projects right">
+                    <span aria-hidden="true">&rarr;</span>
+                </button>
+            </div>
+        </div>
 
         @if($projects->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="project-showcase-track"
+                 x-ref="projectTrack">
                 @foreach($projects as $project)
-                    <div class="project-card">
-
-                        {{-- Thumbnail --}}
+                    <a href="{{ route('cpemina.projects.show', $project->slug) }}"
+                       class="project-card project-showcase-slide group block">
                         @if($project->thumbnail)
                             <img src="{{ $project->thumbnail_url }}"
                                  alt="{{ $project->title }}"
-                                 class="w-full h-48 object-cover">
+                                 loading="lazy"
+                                 decoding="async"
+                                 class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-[1.02]">
                         @else
-                            <div class="w-full h-48 flex items-center justify-center"
+                            <div class="w-full h-56 flex items-center justify-center"
                                  style="background:#1B3022;">
                                 <span class="font-serif text-3xl"
-                                      style="color:rgba(74,124,89,0.40);">⚡</span>
+                                      style="color:rgba(74,124,89,0.40);">[=]</span>
                             </div>
                         @endif
 
@@ -230,42 +277,32 @@
                                 style="color:#061B0E;">
                                 {{ $project->title }}
                             </h3>
-                            <p class="text-sm leading-relaxed mb-4"
+                            <p class="text-sm leading-relaxed mb-4 project-summary-clamp"
                                style="color:rgba(6,27,14,0.55);">
                                 {{ $project->description }}
                             </p>
 
-                            {{-- Technologies --}}
                             @if($project->technologies)
-                                <div class="flex flex-wrap gap-2 mb-4">
-                                    @foreach($project->technologies as $tech)
+                                <div class="flex flex-wrap gap-2 mb-5">
+                                    @foreach(collect($project->technologies)->take(4) as $tech)
                                         <span class="tag-tech">{{ $tech }}</span>
                                     @endforeach
                                 </div>
                             @endif
 
-                            {{-- Links --}}
-                            <div class="flex gap-4 pt-2"
+                            <div class="flex items-center justify-between gap-4 pt-3"
                                  style="border-top:1px solid rgba(6,27,14,0.06);">
-                                @if($project->github_url)
-                                    <a href="{{ $project->github_url }}"
-                                       target="_blank"
-                                       class="text-xs font-medium hover:opacity-70 transition-opacity"
-                                       style="color:#4A7C59;">
-                                        GitHub →
-                                    </a>
-                                @endif
-                                @if($project->live_url)
-                                    <a href="{{ $project->live_url }}"
-                                       target="_blank"
-                                       class="text-xs font-medium hover:opacity-70 transition-opacity"
-                                       style="color:#4A7C59;">
-                                        Live Demo →
-                                    </a>
-                                @endif
+                                <span class="text-xs font-medium tracking-[0.16em] uppercase"
+                                      style="color:rgba(6,27,14,0.35);">
+                                    Dedicated Page
+                                </span>
+                                <span class="text-sm font-semibold transition-transform duration-200 group-hover:translate-x-1"
+                                      style="color:#4A7C59;">
+                                    Explore &rarr;
+                                </span>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 @endforeach
             </div>
         @else
@@ -278,13 +315,9 @@
                 </p>
             </div>
         @endif
-
     </div>
 </section>
 
-{{-- ═══════════════════════════════════════ --}}
-{{-- FOOTER                                  --}}
-{{-- ═══════════════════════════════════════ --}}
 <footer style="background:#061B0E; border-top:1px solid rgba(250,249,245,0.05);"
         class="py-12">
     <div class="max-w-6xl mx-auto px-6">
@@ -317,13 +350,13 @@
                 </a>
             </div>
             <p style="color:rgba(250,249,245,0.20); font-size:12px;">
-                © {{ date('Y') }} Paul Albert Mina
+                &copy; {{ date('Y') }} Paul Albert Mina
             </p>
         </div>
     </div>
 </footer>
 
-    @push('scripts')
+@push('scripts')
 <script>
     window.currentNiche = 'cpemina';
 </script>

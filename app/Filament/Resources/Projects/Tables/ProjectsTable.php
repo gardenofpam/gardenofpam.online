@@ -25,6 +25,8 @@ class ProjectsTable
                     }),
                 TextColumn::make('title')
                     ->searchable(),
+                TextColumn::make('slug')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -39,6 +41,7 @@ class ProjectsTable
                     ->sortable(),
             ])
             ->defaultSort('sort_order')
+            ->reorderable('sort_order')
             ->filters([
                 SelectFilter::make('niche')
                     ->options([
@@ -57,4 +60,3 @@ class ProjectsTable
             ]);
     }
 }
-

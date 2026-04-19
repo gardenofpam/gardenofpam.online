@@ -26,6 +26,8 @@ Route::prefix('gardenofpam')->group(function () {
 Route::prefix('cpemina')->group(function () {
     Route::get('/', [CpeminaController::class, 'index'])
          ->name('cpemina.index');
+    Route::get('/{slug}', [CpeminaController::class, 'show'])
+         ->name('cpemina.projects.show');
 });
 
 // ─────────────────────────────────────────
