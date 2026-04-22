@@ -21,8 +21,13 @@ RUN composer install --no-dev --optimize-autoloader
 
 COPY ./docker/nginx.conf /etc/nginx/sites-available/default
 
-RUN chmod -R 775 storage bootstrap/cache
+RUN chmod -R 777 storage bootstrap/cache \
+    && chmod -R 777 /tmp \
+    && mkdir -p storage/framework/views \
+    && mkdir -p storage/framework/cache \
+    && mkdir -p storage/framework/sessions \
+    && chmod -R 777 storage/framework
 
 EXPOSE 10000
 
-CMD service nginx start && php-fpm
+CMD service nginx start && php artisan config:clear && php artisan view:clear && php-fpm
