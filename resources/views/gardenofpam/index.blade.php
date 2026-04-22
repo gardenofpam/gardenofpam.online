@@ -98,7 +98,7 @@
                     style="color:#061B0E;">
                     Welcome to my<br>
                     <em class="font-normal" style="color:#4A7C59;">
-                        digital garden.
+                        digital garden,
                     </em>
                 </h1>
 
@@ -106,7 +106,7 @@
 
                 <p class="text-lg leading-relaxed mb-10 max-w-md"
                    style="color:rgba(6,27,14,0.55);">
-                    {{ $profile->tagline ?? 'Habits are quiet acts of love you give to your future self; with time, they become your life in bloom.' }}
+                    {{ $profile->tagline ?? 'where ideas grow and evolve over time. This space reflects my journey in technology, creativity, and continuous learning. Here you’ll find my projects, skills, and experiments as I build and improve them.' }}
                 </p>
 
                 <div class="flex items-center gap-4 flex-wrap">
