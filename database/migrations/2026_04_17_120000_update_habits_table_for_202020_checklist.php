@@ -32,7 +32,7 @@ return new class extends Migration
         });
 
         // Backfill date for existing rows so checklist records stay usable.
-        DB::statement('UPDATE habits SET `date` = DATE(created_at) WHERE `date` IS NULL');
+        DB::statement('UPDATE habits SET "date" = DATE(created_at) WHERE "date" IS NULL');
     }
 
     public function down(): void
