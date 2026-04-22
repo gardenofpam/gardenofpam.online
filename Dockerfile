@@ -30,4 +30,4 @@ RUN chmod -R 777 storage bootstrap/cache \
 
 EXPOSE 10000
 
-CMD service nginx start && php artisan config:clear && php artisan view:clear && php-fpm
+CMD service nginx start && php artisan config:clear && php artisan view:clear && php artisan migrate --force && php-fpm
