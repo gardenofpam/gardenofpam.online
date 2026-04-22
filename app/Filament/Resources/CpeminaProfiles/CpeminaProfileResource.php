@@ -16,7 +16,7 @@ class CpeminaProfileResource extends Resource
 {
     protected static ?string $model = Profile::class;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationIcon(): string
     {
@@ -25,7 +25,7 @@ class CpeminaProfileResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return 'CPEmina Profile';
+        return 'General Page Content';
     }
 
     public static function getModelLabel(): string
@@ -40,7 +40,7 @@ class CpeminaProfileResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return 'Portfolio';
+        return 'CPEMina CMS';
     }
 
     public static function form(Schema $schema): Schema

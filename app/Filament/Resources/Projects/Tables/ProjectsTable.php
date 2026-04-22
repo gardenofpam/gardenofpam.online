@@ -19,6 +19,7 @@ class ProjectsTable
                 TextColumn::make('niche')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
+                        'gardenofpam'  => 'success',
                         'cpemina'      => 'info',
                         'minapauldata' => 'warning',
                         default        => 'gray',
@@ -45,6 +46,7 @@ class ProjectsTable
             ->filters([
                 SelectFilter::make('niche')
                     ->options([
+                        'gardenofpam'  => 'GardenOfPam',
                         'cpemina'      => 'CPEmina',
                         'minapauldata' => 'MinaPaulData',
                     ]),

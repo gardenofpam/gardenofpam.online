@@ -90,7 +90,7 @@ class ProfileForm
                                 'name' => basename($file),
                                 'size' => $storage->size($file),
                                 'type' => $storage->mimeType($file),
-                                'url' => asset('storage/' . ltrim($file, '/')),
+                                'url' => '/storage/' . ltrim($file, '/'),
                             ];
                         })
                         ->imageEditor()
@@ -162,7 +162,7 @@ class ProfileForm
                             'name' => basename($file),
                             'size' => $storage->size($file),
                             'type' => $storage->mimeType($file),
-                            'url' => asset('storage/' . ltrim($file, '/')),
+                            'url' => '/storage/' . ltrim($file, '/'),
                         ];
                     })
                     ->downloadable()

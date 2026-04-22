@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
+    protected static bool $shouldRegisterNavigation = false;
 
     protected static ?int $navigationSort = 1;
 

@@ -59,26 +59,28 @@ class Profile extends Model
             return $path;
         }
 
-        if (Storage::disk('public')->exists($path)) {
-            return Storage::url($path);
+        $normalizedPath = ltrim(Str::after($path, '/storage/'), '/');
+
+        if (Storage::disk('public')->exists($normalizedPath)) {
+            return '/storage/' . $normalizedPath;
         }
 
         // Backfill legacy uploads that were saved to the local/private disk.
-        if (Storage::disk('local')->exists($path)) {
-            $stream = Storage::disk('local')->readStream($path);
+        if (Storage::disk('local')->exists($normalizedPath)) {
+            $stream = Storage::disk('local')->readStream($normalizedPath);
 
             if ($stream !== false) {
-                Storage::disk('public')->writeStream($path, $stream);
+                Storage::disk('public')->writeStream($normalizedPath, $stream);
 
                 if (is_resource($stream)) {
                     fclose($stream);
                 }
 
-                return Storage::url($path);
+                return '/storage/' . $normalizedPath;
             }
         }
 
-        return asset('storage/' . ltrim($path, '/'));
+        return '/storage/' . $normalizedPath;
     }
 
     public static function forNiche(string $niche): ?self

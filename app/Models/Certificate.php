@@ -10,6 +10,7 @@ class Certificate extends Model
     use HasFactory;
 
     protected $fillable = [
+        'niche',
         'title',
         'issuer',
         'issued_date',
@@ -36,5 +37,10 @@ class Certificate extends Model
     public function scopePublished($query)
     {
         return $query->where('status', 'published');
+    }
+
+    public function scopeForNiche($query, string $niche)
+    {
+        return $query->where('niche', $niche);
     }
 }

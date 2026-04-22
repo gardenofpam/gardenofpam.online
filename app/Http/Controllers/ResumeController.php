@@ -38,7 +38,7 @@ class ResumeController extends Controller
 
     protected function getActiveResume(): Resume
     {
-        $resume = Resume::getActive();
+        $resume = Resume::getActiveForNiche('minapauldata');
 
         if (! $resume) {
             abort(404, 'Resume not found');

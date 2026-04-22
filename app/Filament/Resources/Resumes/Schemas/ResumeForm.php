@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Resumes\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
@@ -135,5 +136,32 @@ class ResumeForm
                 ])
                 ->collapsible(),
         ];
+    }
+
+    public static function schemaForNiche(string $niche): array
+    {
+        $schema = self::schema();
+
+        if (isset($schema[0])) {
+            $schema[0]->schema([
+                Hidden::make('niche')->default($niche)->dehydrated(true),
+                TextInput::make('version')
+                    ->required()
+                    ->default('1.0'),
+                FileUpload::make('resume_file')
+                    ->label('Downloadable Resume File')
+                    ->disk('public')
+                    ->directory('resumes')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->downloadable()
+                    ->openable()
+                    ->preserveFilenames(),
+                Toggle::make('is_active')
+                    ->label('Set as Active Resume')
+                    ->default(true),
+            ])->columns(4);
+        }
+
+        return $schema;
     }
 }

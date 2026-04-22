@@ -39,8 +39,17 @@ class Project extends Model
     public function getThumbnailUrlAttribute(): string
     {
         if ($this->thumbnail) {
-            return asset('storage/' . $this->thumbnail);
+            return $this->toPublicStorageUrl($this->thumbnail);
         }
+
+        $firstGalleryImage = collect($this->project_images ?? [])
+            ->filter()
+            ->first();
+
+        if (filled($firstGalleryImage)) {
+            return $this->toPublicStorageUrl($firstGalleryImage);
+        }
+
         return asset('images/default-project.png');
     }
 
@@ -55,7 +64,7 @@ class Project extends Model
         }
 
         return $paths
-            ->map(fn (string $path): string => asset('storage/' . ltrim($path, '/')))
+            ->map(fn (string $path): string => $this->toPublicStorageUrl($path))
             ->all();
     }
 
@@ -64,8 +73,22 @@ class Project extends Model
         return collect($this->wiring_images ?? [])
             ->filter()
             ->values()
-            ->map(fn (string $path): string => asset('storage/' . ltrim($path, '/')))
+            ->map(fn (string $path): string => $this->toPublicStorageUrl($path))
             ->all();
+    }
+
+    protected function toPublicStorageUrl(string $path): string
+    {
+        if (Str::startsWith($path, ['http://', 'https://'])) {
+            return $path;
+        }
+
+        $normalizedPath = str_replace('\\', '/', $path);
+        $normalizedPath = Str::after($normalizedPath, '/storage/');
+        $normalizedPath = Str::after($normalizedPath, 'storage/');
+        $normalizedPath = ltrim($normalizedPath, '/');
+
+        return '/storage/' . $normalizedPath;
     }
 
     public function scopePublished($query)

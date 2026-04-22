@@ -258,19 +258,11 @@
                 @foreach($projects as $project)
                     <a href="{{ route('cpemina.projects.show', $project->slug) }}"
                        class="project-card project-showcase-slide group block">
-                        @if($project->thumbnail)
-                            <img src="{{ $project->thumbnail_url }}"
-                                 alt="{{ $project->title }}"
-                                 loading="lazy"
-                                 decoding="async"
-                                 class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-[1.02]">
-                        @else
-                            <div class="w-full h-56 flex items-center justify-center"
-                                 style="background:#1B3022;">
-                                <span class="font-serif text-3xl"
-                                      style="color:rgba(74,124,89,0.40);">[=]</span>
-                            </div>
-                        @endif
+                        <img src="{{ $project->thumbnail_url }}"
+                             alt="{{ $project->title }}"
+                             loading="lazy"
+                             decoding="async"
+                             class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-[1.02]">
 
                         <div class="p-6">
                             <h3 class="font-serif text-lg font-semibold mb-2"

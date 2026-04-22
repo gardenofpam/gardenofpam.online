@@ -18,11 +18,12 @@ class MinaPaulDataController extends Controller
                            ->orderBy('sort_order')
                            ->get();
 
-        $certificates = Certificate::published()
+        $certificates = Certificate::forNiche('minapauldata')
+                                   ->published()
                                    ->orderBy('sort_order')
                                    ->get();
 
-        $resume = Resume::getActive();
+        $resume = Resume::getActiveForNiche('minapauldata');
 
         return view('minapauldata.index', compact(
             'profile',
