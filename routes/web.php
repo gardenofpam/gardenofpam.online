@@ -7,17 +7,14 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ResumeController;
 use Illuminate\Support\Facades\Route;
 
-// Root redirect to gardenofpam
-Route::get('/', function () {
-    return redirect('/gardenofpam');
-});
-
 // ─────────────────────────────────────────
 // GardenofPam Routes
 // ─────────────────────────────────────────
+Route::get('/', [GardenofPamController::class, 'index'])
+     ->name('gardenofpam.index');
+
 Route::prefix('gardenofpam')->group(function () {
-    Route::get('/', [GardenofPamController::class, 'index'])
-         ->name('gardenofpam.index');
+    Route::get('/', [GardenofPamController::class, 'index']);
 });
 
 // ─────────────────────────────────────────
