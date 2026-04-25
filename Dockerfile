@@ -21,7 +21,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY . .
 
-RUN npm install && npm run build
+RUN npm ci && npm run build
 
 RUN composer install --no-dev --optimize-autoloader
 
@@ -36,4 +36,4 @@ RUN chmod -R 777 storage bootstrap/cache \
 
 EXPOSE 10000
 
-CMD service nginx start && php artisan config:clear && php artisan view:clear && php artisan config:cache && php artisan route:cache && php artisan migrate --force && php artisan db:seed --force && php-fpm
+CMD service nginx start && php artisan config:clear && php artisan view:clear && php artisan config:cache && php artisan route:cache && php artisan livewire:publish --assets && php artisan filament:assets && php artisan migrate --force && php artisan db:seed --force && php-fpm
