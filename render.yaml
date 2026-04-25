@@ -4,10 +4,11 @@ services:
     env: php
     buildCommand: |
       composer install --no-dev --optimize-autoloader
+      composer dump-autoload --no-scripts
       php artisan config:cache
       php artisan route:cache
       php artisan view:cache
-    startCommand: php artisan serve --host=0.0.0.0 --port=10000
+    startCommand: bash -lc "for i in {1..30}; do php artisan migrate --force && break || sleep 2; done; php artisan db:seed --force; php artisan serve --host=0.0.0.0 --port=10000"
     envVars:
       - key: APP_ENV
         value: production
