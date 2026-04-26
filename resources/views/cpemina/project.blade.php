@@ -308,7 +308,7 @@
 
                 @if(count($wiringImages))
                     <div class="detail-card p-6"
-                         x-data="sliderComponent(@js($wiringImages))">
+                         x-data="{ ...sliderComponent(@js($wiringImages)), lightbox: false }"
                         <div class="flex items-center justify-between gap-4 mb-5">
                             <div>
                                 <p class="section-label mb-2">Connections</p>
@@ -317,15 +317,29 @@
                             <p class="text-sm" style="color:rgba(6,27,14,0.42);" x-text="`${current + 1} / ${slides.length}`"></p>
                         </div>
 
+                        {{-- Lightbox --}}
+                        <div x-show="lightbox"
+                            x-cloak
+                            class="fixed inset-0 z-50 flex items-center justify-center p-4"
+                            style="background:rgba(0,0,0,0.88);"
+                            @click="lightbox = false">
+                            <img :src="slides[current]"
+                                class="max-w-full max-h-full rounded-xl shadow-2xl"
+                                alt="Wiring diagram zoomed">
+                            <button class="absolute top-4 right-4 text-white text-2xl font-bold"
+                                    @click="lightbox = false">✕</button>
+                        </div>
+
                         <div class="detail-slider aspect-[4/3]"
-                             @touchstart="touchStart($event)"
-                             @touchend="touchEnd($event)">
+                            @touchstart="touchStart($event)"
+                            @touchend="touchEnd($event)">
                             <template x-for="(slide, index) in slides" :key="slide">
                                 <img x-show="current === index"
-                                     x-transition.opacity.duration.300ms
-                                     :src="slide"
-                                     alt="Wiring diagram for {{ $project->title }}"
-                                     class="detail-slide">
+                                    x-transition.opacity.duration.300ms
+                                    :src="slide"
+                                    alt="Wiring diagram for {{ $project->title }}"
+                                    class="detail-slide cursor-zoom-in"
+                                    @click="lightbox = true">
                             </template>
 
                             <template x-if="slides.length > 1">
