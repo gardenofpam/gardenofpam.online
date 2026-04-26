@@ -47,6 +47,7 @@ class CertificateForm
                         ->image()
                         ->directory('certificates')
                         ->imageEditor()
+                        ->maxSize(2048)
                         ->columnSpanFull(),
 
                     TextInput::make('sort_order')
@@ -64,6 +65,7 @@ class CertificateForm
                     Hidden::make('niche')
                         ->default($niche)
                         ->dehydrated(true),
+
                     TextInput::make('title')
                         ->required()
                         ->maxLength(255)
@@ -95,6 +97,7 @@ class CertificateForm
                         ->image()
                         ->directory('certificates')
                         ->imageEditor()
+                        ->maxSize(2048)
                         ->columnSpanFull(),
 
                     TextInput::make('sort_order')
