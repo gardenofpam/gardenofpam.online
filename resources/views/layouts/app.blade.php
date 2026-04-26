@@ -132,11 +132,11 @@
                 </a>
                 <a href="{{ route('cpemina.index') }}"
                    class="nav-link {{ request()->is('cpemina*') ? 'text-forest' : 'text-forest/50 hover:text-forest' }}">
-                    Engineering
+                    Cpemina
                 </a>
                 <a href="{{ route('minapauldata.index') }}"
                    class="nav-link {{ request()->is('minapauldata*') ? 'text-forest' : 'text-forest/50 hover:text-forest' }}">
-                    Data
+                    Minapaul.data
                 </a>
             </div>
         </div>
