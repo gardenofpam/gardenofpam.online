@@ -135,15 +135,16 @@
         background: rgba(255,255,255,0.14);
     }
     pre[class*="language-"] {
-    margin: 0;
-    padding: 4.5rem 1.25rem 1.5rem;
-    background: transparent !important;
-    max-height: 32rem;
-    overflow: auto;
-    white-space: pre-wrap;
-    word-break: break-all;
-    word-wrap: break-word;
+        margin: 0;
+        padding: 4.5rem 1.25rem 1.5rem;
+        background: transparent !important;
+        max-height: 32rem;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+        word-wrap: break-word;
     }
+    [x-cloak] { display: none !important; }
 </style>
 @endpush
 
@@ -308,38 +309,49 @@
 
                 @if(count($wiringImages))
                     <div class="detail-card p-6"
-                         x-data="{ ...sliderComponent(@js($wiringImages)), lightbox: false }"
+                         x-data="{ ...sliderComponent(@js($wiringImages)), lightbox: false }">
+
+                        {{-- Lightbox Overlay --}}
+                        <div x-show="lightbox"
+                             x-cloak
+                             class="fixed inset-0 z-50 flex items-center justify-center p-4"
+                             style="background:rgba(0,0,0,0.88);"
+                             @click="lightbox = false">
+                            <img :src="slides[current]"
+                                 class="max-w-full max-h-full rounded-xl shadow-2xl"
+                                 alt="Wiring diagram zoomed"
+                                 @click.stop>
+                            <button class="absolute top-4 right-4 text-white text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full"
+                                    style="background:rgba(255,255,255,0.15);"
+                                    @click="lightbox = false">✕</button>
+                        </div>
+
                         <div class="flex items-center justify-between gap-4 mb-5">
                             <div>
                                 <p class="section-label mb-2">Connections</p>
                                 <h2 class="font-serif text-3xl font-bold" style="color:#061B0E;">Wiring Section</h2>
                             </div>
-                            <p class="text-sm" style="color:rgba(6,27,14,0.42);" x-text="`${current + 1} / ${slides.length}`"></p>
-                        </div>
-
-                        {{-- Lightbox --}}
-                        <div x-show="lightbox"
-                            x-cloak
-                            class="fixed inset-0 z-50 flex items-center justify-center p-4"
-                            style="background:rgba(0,0,0,0.88);"
-                            @click="lightbox = false">
-                            <img :src="slides[current]"
-                                class="max-w-full max-h-full rounded-xl shadow-2xl"
-                                alt="Wiring diagram zoomed">
-                            <button class="absolute top-4 right-4 text-white text-2xl font-bold"
-                                    @click="lightbox = false">✕</button>
+                            <div class="flex items-center gap-3">
+                                <p class="text-sm" style="color:rgba(6,27,14,0.42);" x-text="`${current + 1} / ${slides.length}`"></p>
+                                <button type="button"
+                                        @click="lightbox = true"
+                                        class="detail-tag cursor-pointer"
+                                        style="background:rgba(6,27,14,0.06); color:#061B0E; border-color:rgba(6,27,14,0.12);">
+                                    🔍 Zoom
+                                </button>
+                            </div>
                         </div>
 
                         <div class="detail-slider aspect-[4/3]"
-                            @touchstart="touchStart($event)"
-                            @touchend="touchEnd($event)">
+                             @touchstart="touchStart($event)"
+                             @touchend="touchEnd($event)">
                             <template x-for="(slide, index) in slides" :key="slide">
                                 <img x-show="current === index"
-                                    x-transition.opacity.duration.300ms
-                                    :src="slide"
-                                    alt="Wiring diagram for {{ $project->title }}"
-                                    class="detail-slide cursor-zoom-in"
-                                    @click="lightbox = true">
+                                     x-transition.opacity.duration.300ms
+                                     :src="slide"
+                                     alt="Wiring diagram for {{ $project->title }}"
+                                     class="detail-slide cursor-zoom-in"
+                                     @click="lightbox = true">
                             </template>
 
                             <template x-if="slides.length > 1">
@@ -349,6 +361,10 @@
                                 <button type="button" class="detail-nav right-4" @click="next()" aria-label="Next wiring image">&rarr;</button>
                             </template>
                         </div>
+
+                        <p class="text-xs text-center mt-3" style="color:rgba(6,27,14,0.35);">
+                            Click image or 🔍 Zoom to view full size
+                        </p>
                     </div>
                 @endif
             </div>
@@ -461,16 +477,8 @@
             },
             touchEnd(event) {
                 const delta = event.changedTouches[0].clientX - this.touchStartX;
-
-                if (Math.abs(delta) < 40) {
-                    return;
-                }
-
-                if (delta < 0) {
-                    this.next();
-                    return;
-                }
-
+                if (Math.abs(delta) < 40) return;
+                if (delta < 0) { this.next(); return; }
                 this.prev();
             },
         };
