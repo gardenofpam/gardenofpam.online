@@ -135,11 +135,14 @@
         background: rgba(255,255,255,0.14);
     }
     pre[class*="language-"] {
-        margin: 0;
-        padding: 4.5rem 1.25rem 1.5rem;
-        background: transparent !important;
-        max-height: 32rem;
-        overflow: auto;
+    margin: 0;
+    padding: 4.5rem 1.25rem 1.5rem;
+    background: transparent !important;
+    max-height: 32rem;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
     }
 </style>
 @endpush
