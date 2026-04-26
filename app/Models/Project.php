@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Project extends Model
@@ -30,10 +31,10 @@ class Project extends Model
     ];
 
     protected $casts = [
-        'technologies' => 'array',
+        'technologies'   => 'array',
         'project_images' => 'array',
-        'components' => 'array',
-        'wiring_images' => 'array',
+        'components'     => 'array',
+        'wiring_images'  => 'array',
     ];
 
     public function getThumbnailUrlAttribute(): string
@@ -88,6 +89,22 @@ class Project extends Model
         $normalizedPath = Str::after($normalizedPath, 'storage/');
         $normalizedPath = ltrim($normalizedPath, '/');
 
+        if (Storage::disk('public')->exists($normalizedPath)) {
+            return '/storage/' . $normalizedPath;
+        }
+
+        // Backfill legacy uploads saved to local/private disk
+        if (Storage::disk('local')->exists($normalizedPath)) {
+            $stream = Storage::disk('local')->readStream($normalizedPath);
+            if ($stream !== false) {
+                Storage::disk('public')->writeStream($normalizedPath, $stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+                return '/storage/' . $normalizedPath;
+            }
+        }
+
         return '/storage/' . $normalizedPath;
     }
 
@@ -114,8 +131,9 @@ class Project extends Model
     {
         $baseSlug = Str::slug($this->title ?: 'project');
         $baseSlug = $baseSlug !== '' ? $baseSlug : 'project';
-        $slug = $baseSlug;
-        $suffix = 2;
+
+        $slug     = $baseSlug;
+        $suffix   = 2;
 
         while (
             static::query()
