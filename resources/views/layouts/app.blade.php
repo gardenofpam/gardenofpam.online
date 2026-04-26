@@ -119,8 +119,9 @@
 
             {{-- Logo --}}
             <a href="{{ route('gardenofpam.index') }}"
-               class="font-serif text-lg font-semibold text-forest tracking-tight">
-                Paul Albert Mina
+            class="font-serif text-lg font-semibold text-forest tracking-tight">
+                <span class="hidden sm:inline">Paul Albert Mina</span>
+                <span class="inline sm:hidden">PAM</span>
             </a>
 
             {{-- Nav Links --}}
