@@ -179,7 +179,6 @@
                             Download Resume →
                         </a>
                     @endif
-                    
                 </div>
             </div>
 
@@ -404,7 +403,7 @@
                         <div class="w-full h-36 flex items-center justify-center mb-4"
                              style="background:rgba(6,27,14,0.04);
                                     border-radius:8px;
-                                    border:1px solid rgba(6,27,14,                                    0.06);">
+                                    border:1px solid rgba(6,27,14,0.06);">
                             <span style="color:rgba(6,27,14,0.20); font-size:28px;">🏆</span>
                         </div>
                     @endif
@@ -438,257 +437,6 @@
             @endforeach
         </div>
 
-    </div>
-</section>
-@endif
-
-{{-- ═══════════════════════════════════════ --}}
-{{-- RESUME                                  --}}
-{{-- ═══════════════════════════════════════ --}}
-@if($resume)
-<section style="background:#F5F0E8;" class="py-24">
-    <div class="max-w-6xl mx-auto px-6">
-        @php
-            $technicalSkills = $resume->technical_skills ?? [];
-            $skillGroups = [
-                'Help Desk & Support' => $technicalSkills['help_desk_support'] ?? [],
-                'Infrastructure' => $technicalSkills['infrastructure'] ?? [],
-                'OS & Tools' => $technicalSkills['os_tools'] ?? [],
-            ];
-            $professionalSummary = $resume->professional_summary ?: ($resume->personal_info['summary'] ?? null);
-        @endphp
-
-        <p class="section-label mb-4">Background</p>
-        <h2 class="font-serif text-4xl font-bold mb-12"
-            style="color:#061B0E;">
-            Resume
-        </h2>
-
-        <div class="grid grid-cols-1 xl:grid-cols-[0.9fr,1.1fr] gap-8 items-start">
-            <div class="space-y-6">
-                <div class="resume-meta-card">
-                    <p class="resume-meta-label">Professional Summary</p>
-                    <h3 class="font-serif text-2xl font-bold mb-4" style="color:#061B0E;">
-                        {{ $resume->personal_info['name'] ?? 'Paul Albert Mina' }}
-                    </h3>
-                    @if($professionalSummary)
-                        <p class="text-sm leading-relaxed" style="color:rgba(6,27,14,0.65);">
-                            {{ $professionalSummary }}
-                        </p>
-                    @endif
-                </div>
-
-                <div class="resume-meta-card">
-                    <p class="resume-meta-label">Technical Skills</p>
-                    <div class="space-y-4">
-                        @foreach($skillGroups as $label => $items)
-                            @if(!empty($items))
-                                <div>
-                                    <p class="text-xs font-semibold uppercase tracking-[0.18em] mb-2" style="color:#061B0E;">
-                                        {{ $label }}
-                                    </p>
-                                    <div class="flex flex-wrap gap-2">
-                                        @foreach($items as $item)
-                                            <span class="tag-skill">{{ $item }}</span>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
-                </div>
-
-                @if(!empty($resume->certifications))
-                    <div class="resume-meta-card">
-                        <p class="resume-meta-label">Certifications</p>
-                        <div class="space-y-3">
-                            @foreach($resume->certifications as $certification)
-                                @if(!empty($certification['name']))
-                                    <div class="flex items-start justify-between gap-4">
-                                        <div>
-                                            <p class="text-sm font-semibold" style="color:#061B0E;">
-                                                {{ $certification['name'] }}
-                                            </p>
-                                            @if(!empty($certification['issuer']))
-                                                <p class="text-sm" style="color:rgba(6,27,14,0.55);">
-                                                    {{ $certification['issuer'] }}
-                                                </p>
-                                            @endif
-                                        </div>
-                                        @if(!empty($certification['date']))
-                                            <span class="text-xs whitespace-nowrap" style="color:rgba(6,27,14,0.40);">
-                                                {{ $certification['date'] }}
-                                            </span>
-                                        @endif
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-
-                <div class="flex items-center gap-4 flex-wrap">
-                    <a href="{{ route('resume.view') }}"
-                       target="_blank"
-                       style="background:#FAF9F5; color:#061B0E; border:1px solid rgba(6,27,14,0.10); border-radius:10px;"
-                       class="px-6 py-3 text-sm font-medium tracking-wide hover:opacity-90 transition-opacity inline-flex items-center gap-2">
-                        Open Viewer
-                    </a>
-                    <a href="{{ route('resume.download') }}"
-                       style="background:#061B0E; color:#FAF9F5; border-radius:10px;"
-                       class="px-6 py-3 text-sm font-medium tracking-wide hover:opacity-90 transition-opacity inline-flex items-center gap-2">
-                        Download PDF
-                    </a>
-                </div>
-            </div>
-
-            <div class="resume-viewer-shell">
-                <iframe
-                    src="{{ route('resume.view') }}"
-                    title="Resume Viewer"
-                    class="resume-viewer-frame">
-                </iframe>
-            </div>
-        </div>
-    </div>
-</section>
-@endif
-
-@if(false)
-<section style="background:#F5F0E8;" class="py-24">
-    <div class="max-w-4xl mx-auto px-6">
-
-        <p class="section-label mb-4">Background</p>
-        <h2 class="font-serif text-4xl font-bold mb-12"
-            style="color:#061B0E;">
-            Resume
-        </h2>
-
-        <div style="background:#FAF9F5;
-                    border:1px solid rgba(6,27,14,0.08);
-                    border-radius:16px;"
-             class="p-8 shadow-arb">
-
-            {{-- Personal Info --}}
-            @if($resume->personal_info)
-                <div class="resume-section">
-                    <h3 class="font-serif text-2xl font-bold mb-2"
-                        style="color:#061B0E;">
-                        {{ $resume->personal_info['name'] ?? 'Paul Albert Mina' }}
-                    </h3>
-                    <div class="flex flex-wrap gap-4 mt-3">
-                        @if(!empty($resume->personal_info['email']))
-                            <span class="text-sm" style="color:rgba(6,27,14,0.50);">
-                                📧 {{ $resume->personal_info['email'] }}
-                            </span>
-                        @endif
-                        @if(!empty($resume->personal_info['phone']))
-                            <span class="text-sm" style="color:rgba(6,27,14,0.50);">
-                                📱 {{ $resume->personal_info['phone'] }}
-                            </span>
-                        @endif
-                        @if(!empty($resume->personal_info['location']))
-                            <span class="text-sm" style="color:rgba(6,27,14,0.50);">
-                                📍 {{ $resume->personal_info['location'] }}
-                            </span>
-                        @endif
-                    </div>
-                    @if(!empty($resume->personal_info['summary']))
-                        <p class="text-sm leading-relaxed mt-4"
-                           style="color:rgba(6,27,14,0.60);">
-                            {{ $resume->personal_info['summary'] }}
-                        </p>
-                    @endif
-                </div>
-            @endif
-
-            {{-- Education --}}
-            @if($resume->education)
-                <div class="resume-section">
-                    <p class="section-label mb-6">Education</p>
-                    @foreach($resume->education as $edu)
-                        <div class="mb-5">
-                            <p class="font-semibold text-sm" style="color:#061B0E;">
-                                {{ $edu['degree'] ?? '' }} {{ $edu['field'] ?? '' }}
-                            </p>
-                            <p class="text-sm mt-0.5" style="color:#4A7C59;">
-                                {{ $edu['school'] ?? '' }}
-                            </p>
-                            <p class="text-xs mt-0.5" style="color:rgba(6,27,14,0.35);">
-                                {{ $edu['start_year'] ?? '' }}
-                                @if(!empty($edu['end_year']))
-                                    — {{ $edu['end_year'] }}
-                                @endif
-                            </p>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-
-            {{-- Experience --}}
-            @if($resume->experience)
-                <div class="resume-section">
-                    <p class="section-label mb-6">Experience</p>
-                    @foreach($resume->experience as $exp)
-                        <div class="mb-5">
-                            <p class="font-semibold text-sm" style="color:#061B0E;">
-                                {{ $exp['position'] ?? '' }}
-                            </p>
-                            <p class="text-sm mt-0.5" style="color:#4A7C59;">
-                                {{ $exp['company'] ?? '' }}
-                            </p>
-                            <p class="text-xs mt-0.5" style="color:rgba(6,27,14,0.35);">
-                                {{ $exp['start_date'] ?? '' }}
-                                @if(!empty($exp['end_date']))
-                                    — {{ $exp['end_date'] }}
-                                @endif
-                            </p>
-                            @if(!empty($exp['description']))
-                                <p class="text-sm mt-2 leading-relaxed"
-                                   style="color:rgba(6,27,14,0.55);">
-                                    {{ $exp['description'] }}
-                                </p>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-
-            {{-- Skills --}}
-            @if($resume->skills)
-                <div class="resume-section">
-                    <p class="section-label mb-4">Skills</p>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach($resume->skills as $skill)
-                            <span class="tag-skill">{{ $skill }}</span>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
-            {{-- Tools --}}
-            @if($resume->tools)
-                <div class="resume-section">
-                    <p class="section-label mb-4">Tools</p>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach($resume->tools as $tool)
-                            <span class="tag-skill">{{ $tool }}</span>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
-            {{-- Download Button --}}
-            <div class="text-center mt-8 pt-8"
-                 style="border-top:1px solid rgba(6,27,14,0.06);">
-                <a href="{{ route('resume.download') }}"
-                   style="background:#061B0E; color:#FAF9F5; border-radius:10px;"
-                   class="px-8 py-3 text-sm font-medium tracking-wide hover:opacity-90 transition-opacity inline-flex items-center gap-2">
-                    Download PDF Resume →
-                </a>
-            </div>
-
-        </div>
     </div>
 </section>
 @endif
@@ -734,7 +482,7 @@
     </div>
 </footer>
 
-    @push('scripts')
+@push('scripts')
 <script>
     window.currentNiche = 'minapauldata';
 </script>
