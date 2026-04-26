@@ -29,35 +29,19 @@ class Certificate extends Model
     ];
 
     public function getImageUrlAttribute(): string
-    {
-        if (!$this->image) {
-            return asset('images/default-certificate.png');
-        }
-
-        if (Str::startsWith($this->image, ['http://', 'https://'])) {
-            return $this->image;
-        }
-
-        $normalizedPath = ltrim(Str::after($this->image, '/storage/'), '/');
-
-        if (Storage::disk('public')->exists($normalizedPath)) {
-            return '/storage/' . $normalizedPath;
-        }
-
-        // Backfill legacy uploads that were saved to the local/private disk.
-        if (Storage::disk('local')->exists($normalizedPath)) {
-            $stream = Storage::disk('local')->readStream($normalizedPath);
-            if ($stream !== false) {
-                Storage::disk('public')->writeStream($normalizedPath, $stream);
-                if (is_resource($stream)) {
-                    fclose($stream);
-                }
-                return '/storage/' . $normalizedPath;
-            }
-        }
-
-        return '/storage/' . $normalizedPath;
+{
+    if (!$this->image) {
+        return asset('images/default-certificate.png');
     }
+
+    if (Str::startsWith($this->image, ['http://', 'https://'])) {
+        return $this->image;
+    }
+
+    $normalizedPath = ltrim(Str::after($this->image, '/storage/'), '/');
+
+    return Storage::disk('s3')->url($normalizedPath);
+}
 
     public function scopePublished($query)
     {
