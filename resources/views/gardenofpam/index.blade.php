@@ -302,7 +302,7 @@
                style="background:rgba(250,249,245,0.04); border:1px solid rgba(250,249,245,0.08);">
                 <div class="p-8">
                     <p class="section-label mb-4" style="color:rgba(250,249,245,0.30);">
-                        Electronics Engineering
+                        Computer Engineering
                     </p>
                     <h3 class="font-serif text-3xl font-bold mb-3" style="color:#FAF9F5;">
                         CPEmina
