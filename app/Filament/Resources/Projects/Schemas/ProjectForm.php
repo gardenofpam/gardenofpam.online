@@ -31,8 +31,9 @@ class ProjectForm
 
                     Select::make('status')
                         ->options([
-                            'published' => 'Published',
-                            'draft'     => 'Draft',
+                            'published'   => 'Published',
+                            'coming_soon' => 'Coming Soon',
+                            'draft'       => 'Draft',
                         ])
                         ->default('published')
                         ->required(),
@@ -146,8 +147,9 @@ class ProjectForm
 
                     Select::make('status')
                         ->options([
-                            'published' => 'Published',
-                            'draft'     => 'Draft',
+                            'published'   => 'Published',
+                            'coming_soon' => 'Coming Soon',
+                            'draft'       => 'Draft',
                         ])
                         ->default('published')
                         ->required(),

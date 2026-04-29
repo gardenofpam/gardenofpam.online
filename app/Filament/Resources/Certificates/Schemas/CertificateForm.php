@@ -27,8 +27,9 @@ class CertificateForm
 
                     Select::make('status')
                         ->options([
-                            'published' => 'Published',
-                            'draft'     => 'Draft',
+                            'published'   => 'Published',
+                            'coming_soon' => 'Coming Soon',
+                            'draft'       => 'Draft',
                         ])
                         ->default('published')
                         ->required(),
@@ -77,8 +78,9 @@ class CertificateForm
 
                     Select::make('status')
                         ->options([
-                            'published' => 'Published',
-                            'draft'     => 'Draft',
+                            'published'   => 'Published',
+                            'coming_soon' => 'Coming Soon',
+                            'draft'       => 'Draft',
                         ])
                         ->default('published')
                         ->required(),

@@ -23,9 +23,10 @@ class CertificatesTable
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'published' => 'success',
-                        'draft'     => 'gray',
-                        default     => 'gray',
+                        'published'   => 'success',
+                        'coming_soon' => 'warning',
+                        'draft'       => 'gray',
+                        default       => 'gray',
                     }),
                 TextColumn::make('sort_order')
                     ->sortable(),
@@ -37,4 +38,3 @@ class CertificatesTable
             ]);
     }
 }
-

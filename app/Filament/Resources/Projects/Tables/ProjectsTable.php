@@ -31,9 +31,10 @@ class ProjectsTable
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'published' => 'success',
-                        'draft'     => 'gray',
-                        default     => 'gray',
+                        'published'   => 'success',
+                        'coming_soon' => 'warning',
+                        'draft'       => 'gray',
+                        default       => 'gray',
                     }),
                 TextColumn::make('sort_order')
                     ->sortable(),
@@ -52,8 +53,9 @@ class ProjectsTable
                     ]),
                 SelectFilter::make('status')
                     ->options([
-                        'published' => 'Published',
-                        'draft'     => 'Draft',
+                        'published'   => 'Published',
+                        'coming_soon' => 'Coming Soon',
+                        'draft'       => 'Draft',
                     ]),
             ])
             ->recordActions([
