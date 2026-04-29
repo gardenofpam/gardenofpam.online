@@ -3,20 +3,7 @@
     $wiringImages = $project->wiring_image_urls;
     $components = collect($project->components ?? [])->filter(fn ($component) => filled($component['name'] ?? null))->values();
     $technologies = collect($project->technologies ?? [])->filter()->values();
-    $codeLanguage = $project->code_language ?: 'cpp';
-    $codeClass = match ($codeLanguage) {
-        'cpp' => 'language-cpp',
-        'python' => 'language-python',
-        'php' => 'language-php',
-        'javascript' => 'language-javascript',
-        'html' => 'language-markup',
-        'css' => 'language-css',
-        'json' => 'language-json',
-        'sql' => 'language-sql',
-        'yaml' => 'language-yaml',
-        'xml' => 'language-markup',
-        default => 'language-clike',
-    };
+    $codeClass = 'language-cpp';
 @endphp
 
 @extends('layouts.app')
@@ -386,10 +373,9 @@
                          x-data="{ copied: false, code: @js($project->source_code) }">
                         <div class="flex items-center justify-between gap-4 mb-5">
                             <div>
-                                <p class="section-label mb-2">Source</p>
-                                <h2 class="font-serif text-3xl font-bold" style="color:#061B0E;">Code Section</h2>
+                                <p class="section-label mb-2">Arduino Sketch</p>
+                                <h2 class="font-serif text-3xl font-bold" style="color:#061B0E;">Arduino Sketch</h2>
                             </div>
-                            <span class="detail-tag">{{ strtoupper($codeLanguage) }}</span>
                         </div>
 
                         <div class="code-frame">
@@ -449,12 +435,6 @@
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-c.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-php.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-sql.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
 <script>
     window.currentNiche = 'cpemina';
 

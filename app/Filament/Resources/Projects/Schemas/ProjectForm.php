@@ -113,25 +113,10 @@ class ProjectForm
                         ->columns(1)
                         ->columnSpanFull(),
 
-                    Select::make('code_language')
-                        ->options([
-                            'cpp' => 'C++ / Arduino',
-                            'python' => 'Python',
-                            'php' => 'PHP',
-                            'javascript' => 'JavaScript',
-                            'html' => 'HTML',
-                            'css' => 'CSS',
-                            'json' => 'JSON',
-                            'sql' => 'SQL',
-                            'yaml' => 'YAML',
-                            'xml' => 'XML',
-                        ])
-                        ->default('cpp'),
-
                     Textarea::make('source_code')
-                        ->label('Source Code')
+                        ->label('Arduino Sketch')
                         ->rows(18)
-                        ->placeholder('// Paste the main project source code here')
+                        ->placeholder('// Paste the main Arduino sketch here')
                         ->columnSpanFull(),
 
                     TextInput::make('github_url')
@@ -243,25 +228,10 @@ class ProjectForm
                         ->columns(1)
                         ->columnSpanFull(),
 
-                    Select::make('code_language')
-                        ->options([
-                            'cpp' => 'C++ / Arduino',
-                            'python' => 'Python',
-                            'php' => 'PHP',
-                            'javascript' => 'JavaScript',
-                            'html' => 'HTML',
-                            'css' => 'CSS',
-                            'json' => 'JSON',
-                            'sql' => 'SQL',
-                            'yaml' => 'YAML',
-                            'xml' => 'XML',
-                        ])
-                        ->default('cpp'),
-
                     Textarea::make('source_code')
-                        ->label('Source Code')
+                        ->label('Arduino Sketch')
                         ->rows(18)
-                        ->placeholder('// Paste the main project source code here')
+                        ->placeholder('// Paste the main Arduino sketch here')
                         ->columnSpanFull(),
 
                     TextInput::make('github_url')
