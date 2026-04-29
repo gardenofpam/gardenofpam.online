@@ -12,7 +12,14 @@ class DailyTodoResource extends Resource
 {
     protected static ?string $model = DailyTodo::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?int $navigationSort = 2;
+
+    public static function canAccess(): bool
+    {
+        return false;
+    }
 
     public static function getNavigationIcon(): string
     {
