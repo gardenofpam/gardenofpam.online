@@ -315,7 +315,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($projects as $project)
                     <article class="project-card">
-                        <div class="h-56 flex items-center justify-center overflow-hidden" style="background:#F5F0E8;">
+                        <div class="relative h-56 flex items-center justify-center overflow-hidden" style="background:#F5F0E8;">
+                            @if($project->status === 'coming_soon')
+                                <span class="project-tag absolute top-3 left-3 z-10">Coming Soon</span>
+                            @endif
                             <img src="{{ $project->thumbnail_url }}"
                                  alt="{{ $project->title }}"
                                  loading="lazy"
@@ -324,10 +327,6 @@
                         </div>
 
                         <div class="p-6">
-                            @if($project->status === 'coming_soon')
-                                <span class="project-tag mb-3">Coming Soon</span>
-                            @endif
-
                             <h3 class="font-serif text-xl font-semibold mb-3" style="color:#061B0E;">
                                 {{ $project->title }}
                             </h3>

@@ -308,7 +308,10 @@
 
                         {{-- Thumbnail --}}
                         @if($project->thumbnail)
-                            <div class="w-full h-48 flex items-center justify-center overflow-hidden" style="background:#F5F0E8;">
+                            <div class="relative w-full h-48 flex items-center justify-center overflow-hidden" style="background:#F5F0E8;">
+                                @if($project->status === 'coming_soon')
+                                    <span class="tag-data absolute top-3 left-3 z-10">Coming Soon</span>
+                                @endif
                                 <img src="{{ $project->thumbnail_url }}"
                                      alt="{{ $project->title }}"
                                      class="w-full h-full object-contain">
@@ -322,10 +325,6 @@
                         @endif
 
                         <div class="p-6">
-                            @if($project->status === 'coming_soon')
-                                <span class="tag-data mb-3">Coming Soon</span>
-                            @endif
-
                             <h3 class="font-serif text-lg font-semibold mb-2"
                                 style="color:#061B0E;">
                                 {{ $project->title }}

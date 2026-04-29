@@ -263,7 +263,10 @@
                         <a href="{{ route('cpemina.projects.show', $project->slug) }}"
                            class="project-card project-showcase-slide group block">
                     @endif
-                            <div class="w-full h-56 flex items-center justify-center overflow-hidden" style="background:#ece4d8;">
+                            <div class="relative w-full h-56 flex items-center justify-center overflow-hidden" style="background:#ece4d8;">
+                                @if($isComingSoon)
+                                    <span class="tag-tech absolute top-3 left-3 z-10">Coming Soon</span>
+                                @endif
                                 <img src="{{ $project->thumbnail_url }}"
                                      alt="{{ $project->title }}"
                                      loading="lazy"
@@ -272,10 +275,6 @@
                             </div>
 
                             <div class="p-6">
-                                @if($isComingSoon)
-                                    <span class="tag-tech mb-3">Coming Soon</span>
-                                @endif
-
                                 <h3 class="font-serif text-lg font-semibold mb-2"
                                     style="color:#061B0E;">
                                     {{ $project->title }}
