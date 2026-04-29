@@ -25,6 +25,17 @@
         box-shadow: 0 20px 60px rgba(6,27,14,0.12);
         border-color: rgba(6,27,14,0.15);
     }
+    .project-card {
+        background: #FAF9F5;
+        border: 1px solid rgba(6,27,14,0.08);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .project-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 60px rgba(6,27,14,0.12);
+    }
     .movie-card {
         background: #F5F0E8;
         border: 1px solid rgba(6,27,14,0.08);
@@ -55,6 +66,16 @@
         border-radius: 100px;
         font-size: 13px;
         font-weight: 500;
+        display: inline-block;
+    }
+    .project-tag {
+        background: rgba(74,124,89,0.08);
+        color: #4A7C59;
+        border: 1px solid rgba(74,124,89,0.15);
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
         display: inline-block;
     }
     .profile-photo-frame {
@@ -283,6 +304,78 @@
 @endif
 
 {{-- ═══════════════════════════════════════ --}}
+<section style="background:#FAF9F5;" class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+        <p class="section-label mb-4">Projects</p>
+        <h2 class="font-serif text-4xl font-bold mb-12" style="color:#061B0E;">
+            Things Growing in the Garden
+        </h2>
+
+        @if($projects->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($projects as $project)
+                    <article class="project-card">
+                        <img src="{{ $project->thumbnail_url }}"
+                             alt="{{ $project->title }}"
+                             loading="lazy"
+                             decoding="async"
+                             class="w-full h-56 object-cover">
+
+                        <div class="p-6">
+                            <h3 class="font-serif text-xl font-semibold mb-3" style="color:#061B0E;">
+                                {{ $project->title }}
+                            </h3>
+                            <p class="text-sm leading-relaxed mb-4" style="color:rgba(6,27,14,0.58);">
+                                {{ $project->description }}
+                            </p>
+
+                            @if($project->technologies)
+                                <div class="flex flex-wrap gap-2 mb-5">
+                                    @foreach(collect($project->technologies)->take(4) as $technology)
+                                        <span class="project-tag">{{ $technology }}</span>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            @if($project->github_url || $project->live_url)
+                                <div class="flex flex-wrap gap-4 pt-4" style="border-top:1px solid rgba(6,27,14,0.06);">
+                                    @if($project->github_url)
+                                        <a href="{{ $project->github_url }}"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="text-sm font-semibold hover:opacity-75 transition-opacity"
+                                           style="color:#4A7C59;">
+                                            View Source &rarr;
+                                        </a>
+                                    @endif
+                                    @if($project->live_url)
+                                        <a href="{{ $project->live_url }}"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="text-sm font-semibold hover:opacity-75 transition-opacity"
+                                           style="color:#4A7C59;">
+                                            Open Project &rarr;
+                                        </a>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        @else
+            <div class="text-center py-20">
+                <p class="font-serif text-2xl mb-3" style="color:rgba(6,27,14,0.22);">
+                    No projects yet.
+                </p>
+                <p class="text-sm" style="color:rgba(6,27,14,0.35);">
+                    GardenOfPam projects will appear here once added from the CMS.
+                </p>
+            </div>
+        @endif
+    </div>
+</section>
+
 {{-- THE BRANCHES                            --}}
 {{-- ═══════════════════════════════════════ --}}
 <section style="background:#061B0E;" class="py-24">
