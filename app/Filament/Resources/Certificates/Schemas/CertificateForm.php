@@ -47,7 +47,7 @@ class CertificateForm
                         ->image()
                         ->directory('certificates')
                         ->imageEditor()
-                        ->maxSize(2048)
+                        ->maxSize(3072)
                         ->columnSpanFull(),
 
                     TextInput::make('sort_order')
@@ -97,7 +97,7 @@ class CertificateForm
                         ->image()
                         ->directory('certificates')
                         ->imageEditor()
-                        ->maxSize(2048)
+                        ->maxSize(3072)
                         ->columnSpanFull(),
 
                     TextInput::make('sort_order')

@@ -66,7 +66,7 @@ class ProjectForm
                         ->image()
                         ->directory('projects')
                         ->imageEditor()
-                        ->maxSize(2048)
+                        ->maxSize(3072)
                         ->imageEditorAspectRatios(['16:9', '4:3', '1:1'])
                         ->columnSpanFull(),
 
@@ -77,7 +77,7 @@ class ProjectForm
                         ->reorderable()
                         ->directory('projects/gallery')
                         ->imageEditor()
-                        ->maxSize(2048)
+                        ->maxSize(3072)
                         ->columnSpanFull(),
 
                     FileUpload::make('wiring_images')
@@ -87,7 +87,7 @@ class ProjectForm
                         ->reorderable()
                         ->directory('projects/wiring')
                         ->imageEditor()
-                        ->maxSize(2048)
+                        ->maxSize(3072)
                         ->columnSpanFull(),
 
                     TagsInput::make('technologies')
@@ -181,7 +181,7 @@ class ProjectForm
                         ->image()
                         ->directory('projects')
                         ->imageEditor()
-                        ->maxSize(2048)
+                        ->maxSize(3072)
                         ->imageEditorAspectRatios(['16:9', '4:3', '1:1'])
                         ->columnSpanFull(),
 
@@ -192,7 +192,7 @@ class ProjectForm
                         ->reorderable()
                         ->directory('projects/gallery')
                         ->imageEditor()
-                        ->maxSize(2048)
+                        ->maxSize(3072)
                         ->columnSpanFull(),
 
                     FileUpload::make('wiring_images')
@@ -202,7 +202,7 @@ class ProjectForm
                         ->reorderable()
                         ->directory('projects/wiring')
                         ->imageEditor()
-                        ->maxSize(2048)
+                        ->maxSize(3072)
                         ->columnSpanFull(),
 
                     TagsInput::make('technologies')
