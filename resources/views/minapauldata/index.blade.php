@@ -308,9 +308,11 @@
 
                         {{-- Thumbnail --}}
                         @if($project->thumbnail)
-                            <img src="{{ $project->thumbnail_url }}"
-                                 alt="{{ $project->title }}"
-                                 class="w-full h-48 object-cover">
+                            <div class="w-full h-48 flex items-center justify-center overflow-hidden" style="background:#F5F0E8;">
+                                <img src="{{ $project->thumbnail_url }}"
+                                     alt="{{ $project->title }}"
+                                     class="w-full h-full object-contain">
+                            </div>
                         @else
                             <div class="w-full h-48 flex items-center justify-center"
                                  style="background:#061B0E;">

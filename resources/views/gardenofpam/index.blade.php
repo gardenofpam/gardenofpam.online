@@ -315,7 +315,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($projects as $project)
                     <article class="project-card">
-                        <div class="h-56 flex items-center justify-center p-4" style="background:#F5F0E8;">
+                        <div class="h-56 flex items-center justify-center overflow-hidden" style="background:#F5F0E8;">
                             <img src="{{ $project->thumbnail_url }}"
                                  alt="{{ $project->title }}"
                                  loading="lazy"

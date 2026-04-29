@@ -258,7 +258,7 @@
                 @foreach($projects as $project)
                     <a href="{{ route('cpemina.projects.show', $project->slug) }}"
                        class="project-card project-showcase-slide group block">
-                        <div class="w-full h-56 flex items-center justify-center p-4" style="background:#ece4d8;">
+                        <div class="w-full h-56 flex items-center justify-center overflow-hidden" style="background:#ece4d8;">
                             <img src="{{ $project->thumbnail_url }}"
                                  alt="{{ $project->title }}"
                                  loading="lazy"
