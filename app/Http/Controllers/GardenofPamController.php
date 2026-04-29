@@ -12,7 +12,7 @@ class GardenofPamController extends Controller
     {
         $profile = Profile::forNiche('gardenofpam');
         $projects = Project::forNiche('gardenofpam')
-            ->published()
+            ->publiclyVisible()
             ->orderBy('sort_order')
             ->get();
 

@@ -256,47 +256,60 @@
             <div class="project-showcase-track"
                  x-ref="projectTrack">
                 @foreach($projects as $project)
-                    <a href="{{ route('cpemina.projects.show', $project->slug) }}"
-                       class="project-card project-showcase-slide group block">
-                        <div class="w-full h-56 flex items-center justify-center overflow-hidden" style="background:#ece4d8;">
-                            <img src="{{ $project->thumbnail_url }}"
-                                 alt="{{ $project->title }}"
-                                 loading="lazy"
-                                 decoding="async"
-                                 class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]">
-                        </div>
-
-                        <div class="p-6">
-                            <h3 class="font-serif text-lg font-semibold mb-2"
-                                style="color:#061B0E;">
-                                {{ $project->title }}
-                            </h3>
-                            <p class="text-sm leading-relaxed mb-4 project-summary-clamp"
-                               style="color:rgba(6,27,14,0.55);">
-                                {{ $project->description }}
-                            </p>
-
-                            @if($project->technologies)
-                                <div class="flex flex-wrap gap-2 mb-5">
-                                    @foreach(collect($project->technologies)->take(4) as $tech)
-                                        <span class="tag-tech">{{ $tech }}</span>
-                                    @endforeach
-                                </div>
-                            @endif
-
-                            <div class="flex items-center justify-between gap-4 pt-3"
-                                 style="border-top:1px solid rgba(6,27,14,0.06);">
-                                <span class="text-xs font-medium tracking-[0.16em] uppercase"
-                                      style="color:rgba(6,27,14,0.35);">
-                                    Dedicated Page
-                                </span>
-                                <span class="text-sm font-semibold transition-transform duration-200 group-hover:translate-x-1"
-                                      style="color:#4A7C59;">
-                                    Explore &rarr;
-                                </span>
+                    @php($isComingSoon = $project->status === 'coming_soon')
+                    @if($isComingSoon)
+                        <article class="project-card project-showcase-slide block">
+                    @else
+                        <a href="{{ route('cpemina.projects.show', $project->slug) }}"
+                           class="project-card project-showcase-slide group block">
+                    @endif
+                            <div class="w-full h-56 flex items-center justify-center overflow-hidden" style="background:#ece4d8;">
+                                <img src="{{ $project->thumbnail_url }}"
+                                     alt="{{ $project->title }}"
+                                     loading="lazy"
+                                     decoding="async"
+                                     class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]">
                             </div>
-                        </div>
-                    </a>
+
+                            <div class="p-6">
+                                @if($isComingSoon)
+                                    <span class="tag-tech mb-3">Coming Soon</span>
+                                @endif
+
+                                <h3 class="font-serif text-lg font-semibold mb-2"
+                                    style="color:#061B0E;">
+                                    {{ $project->title }}
+                                </h3>
+                                <p class="text-sm leading-relaxed mb-4 project-summary-clamp"
+                                   style="color:rgba(6,27,14,0.55);">
+                                    {{ $project->description }}
+                                </p>
+
+                                @if($project->technologies)
+                                    <div class="flex flex-wrap gap-2 mb-5">
+                                        @foreach(collect($project->technologies)->take(4) as $tech)
+                                            <span class="tag-tech">{{ $tech }}</span>
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                                <div class="flex items-center justify-between gap-4 pt-3"
+                                     style="border-top:1px solid rgba(6,27,14,0.06);">
+                                    <span class="text-xs font-medium tracking-[0.16em] uppercase"
+                                          style="color:rgba(6,27,14,0.35);">
+                                        {{ $isComingSoon ? 'Slug Unavailable' : 'Dedicated Page' }}
+                                    </span>
+                                    <span class="text-sm font-semibold transition-transform duration-200 group-hover:translate-x-1"
+                                          style="color:#4A7C59;">
+                                        {{ $isComingSoon ? 'Coming Soon' : 'Explore →' }}
+                                    </span>
+                                </div>
+                            </div>
+                    @if($isComingSoon)
+                        </article>
+                    @else
+                        </a>
+                    @endif
                 @endforeach
             </div>
         @else

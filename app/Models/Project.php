@@ -97,6 +97,11 @@ class Project extends Model
         return $query->where('status', 'published');
     }
 
+    public function scopePubliclyVisible($query)
+    {
+        return $query->whereIn('status', ['published', 'coming_soon']);
+    }
+
     public function scopeForNiche($query, string $niche)
     {
         return $query->where('niche', $niche);
@@ -105,6 +110,12 @@ class Project extends Model
     protected static function booted(): void
     {
         static::saving(function (self $project): void {
+            if ($project->status === 'coming_soon') {
+                $project->slug = null;
+
+                return;
+            }
+
             if (blank($project->slug) || $project->isDirty('title')) {
                 $project->slug = $project->generateUniqueSlug();
             }

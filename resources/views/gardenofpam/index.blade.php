@@ -324,6 +324,10 @@
                         </div>
 
                         <div class="p-6">
+                            @if($project->status === 'coming_soon')
+                                <span class="project-tag mb-3">Coming Soon</span>
+                            @endif
+
                             <h3 class="font-serif text-xl font-semibold mb-3" style="color:#061B0E;">
                                 {{ $project->title }}
                             </h3>
@@ -359,6 +363,10 @@
                                             Open Project &rarr;
                                         </a>
                                     @endif
+                                </div>
+                            @elseif($project->status === 'coming_soon')
+                                <div class="pt-4 text-sm font-semibold" style="border-top:1px solid rgba(6,27,14,0.06); color:#4A7C59;">
+                                    Slug unavailable until launch
                                 </div>
                             @endif
                         </div>

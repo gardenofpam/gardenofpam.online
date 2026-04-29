@@ -322,6 +322,10 @@
                         @endif
 
                         <div class="p-6">
+                            @if($project->status === 'coming_soon')
+                                <span class="tag-data mb-3">Coming Soon</span>
+                            @endif
+
                             <h3 class="font-serif text-lg font-semibold mb-2"
                                 style="color:#061B0E;">
                                 {{ $project->title }}
@@ -358,6 +362,11 @@
                                        style="color:#4A7C59;">
                                         Live Demo →
                                     </a>
+                                @endif
+                                @if($project->status === 'coming_soon' && ! $project->github_url && ! $project->live_url)
+                                    <span class="text-xs font-medium" style="color:#4A7C59;">
+                                        Slug unavailable until launch
+                                    </span>
                                 @endif
                             </div>
                         </div>

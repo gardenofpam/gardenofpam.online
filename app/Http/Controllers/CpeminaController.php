@@ -13,7 +13,7 @@ class CpeminaController extends Controller
         $profile = Profile::forNiche('cpemina');
 
         $projects = Project::forNiche('cpemina')
-                           ->published()
+                           ->publiclyVisible()
                            ->orderBy('sort_order')
                            ->get();
 

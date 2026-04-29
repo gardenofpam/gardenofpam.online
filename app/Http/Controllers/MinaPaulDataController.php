@@ -14,7 +14,7 @@ class MinaPaulDataController extends Controller
         $profile = Profile::forNiche('minapauldata');
 
         $projects = Project::forNiche('minapauldata')
-                           ->published()
+                           ->publiclyVisible()
                            ->orderBy('sort_order')
                            ->get();
 
