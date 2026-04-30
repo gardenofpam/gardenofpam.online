@@ -272,7 +272,8 @@
                                      aria-hidden="true"
                                      loading="lazy"
                                      decoding="async"
-                                     class="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-25">
+                                     class="absolute inset-0 w-full h-full object-cover scale-110 opacity-55">
+                                <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(236,228,216,0.16) 0%, rgba(236,228,216,0.32) 100%);"></div>
                                 <img src="{{ $project->thumbnail_url }}"
                                      alt="{{ $project->title }}"
                                      loading="lazy"

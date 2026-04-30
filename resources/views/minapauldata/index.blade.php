@@ -315,7 +315,8 @@
                                 <img src="{{ $project->thumbnail_url }}"
                                      alt=""
                                      aria-hidden="true"
-                                     class="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-25">
+                                     class="absolute inset-0 w-full h-full object-cover scale-110 opacity-55">
+                                <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(245,240,232,0.18) 0%, rgba(245,240,232,0.34) 100%);"></div>
                                 <img src="{{ $project->thumbnail_url }}"
                                      alt="{{ $project->title }}"
                                      class="relative z-[1] w-full h-full object-contain">
