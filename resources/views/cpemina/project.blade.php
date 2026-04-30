@@ -410,12 +410,18 @@
                     @foreach($relatedProjects as $relatedProject)
                         <a href="{{ route('cpemina.projects.show', $relatedProject->slug) }}"
                            class="project-card group block">
-                            <div class="w-full h-44 flex items-center justify-center overflow-hidden" style="background:#ece4d8;">
+                            <div class="relative w-full h-44 flex items-center justify-center overflow-hidden" style="background:#ece4d8;">
+                                <img src="{{ $relatedProject->thumbnail_url }}"
+                                     alt=""
+                                     aria-hidden="true"
+                                     loading="lazy"
+                                     decoding="async"
+                                     class="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-25">
                                 <img src="{{ $relatedProject->thumbnail_url }}"
                                      alt="{{ $relatedProject->title }}"
                                      loading="lazy"
                                      decoding="async"
-                                     class="w-full h-full object-contain">
+                                     class="relative z-[1] w-full h-full object-contain">
                             </div>
                             <div class="p-5">
                                 <h3 class="font-serif text-xl font-semibold mb-2" style="color:#061B0E;">

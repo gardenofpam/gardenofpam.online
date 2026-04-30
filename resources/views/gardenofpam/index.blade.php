@@ -320,10 +320,16 @@
                                 <span class="project-tag absolute top-3 left-3 z-10">Coming Soon</span>
                             @endif
                             <img src="{{ $project->thumbnail_url }}"
+                                 alt=""
+                                 aria-hidden="true"
+                                 loading="lazy"
+                                 decoding="async"
+                                 class="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-25">
+                            <img src="{{ $project->thumbnail_url }}"
                                  alt="{{ $project->title }}"
                                  loading="lazy"
                                  decoding="async"
-                                 class="w-full h-full object-contain">
+                                 class="relative z-[1] w-full h-full object-contain">
                         </div>
 
                         <div class="p-6">
